@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+@await Component.InvokeAsync("_HeaderPartial")
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        @await Component.InvokeAsync("_NavbarPartial")
+
+        @await Component.InvokeAsync("_SidebarPartial")
+        
+        @RenderBody()
+        
+        @await Component.InvokeAsync("_FooterPartial")
+        
+        <aside class="control-sidebar control-sidebar-dark">
+        </aside>
+
+    </div>
+    @await Component.InvokeAsync("_ScriptsPartial")
+</body>
+</html>

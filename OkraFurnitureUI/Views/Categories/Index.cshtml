@@ -1,0 +1,74 @@
+﻿@model List<Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int count = 1;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Kategoriler</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Default/Index">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Kategoriler</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/Categories/AddCategory" class="btn btn-outline-primary">Yeni Kategori Ekle</a>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kategori Adı</th>
+                                    <th>Kod</th>
+                                    @* <th>Ürünler</th> *@
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Code</td>
+                                        @* <td>@item.Products</td> *@
+                                        <td><a href="/Categories/DeleteCategory/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                        <td><a href="/Categories/UpdateCategory/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kategori Adı</th>
+                                    <th>Kod</th>
+                                    @* <th>Ürünler</th> *@
+                                    <th>Sil</th>
+                                    <th>Güncelle</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
