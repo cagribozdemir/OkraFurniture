@@ -11,7 +11,7 @@ namespace Business.Abstract
 {
     public interface IOrderService
     {
-        List<Order> GetAll();
+        List<ResultOrderDto> GetAll();
         Order GetById(int id);
         void Add(CreateOrderDto createOrderDto);
         void Update(Order order);

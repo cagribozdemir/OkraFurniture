@@ -15,6 +15,5 @@ namespace Entity.Concrete
         public string Name { get; set; }
         public string Code { get; set; }
         public bool Status { get; set; }
-        public List<Order> Orders { get; set; }
     }
 }

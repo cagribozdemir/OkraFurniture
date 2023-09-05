@@ -23,12 +23,9 @@ namespace Entity.Concrete
         public int FabricId { get; set; }
         public ProductColor ProductColor { get; set; }
         public int ProductColorId { get; set; }
-        public Foot Foot { get; set; }
-        public int FootId { get; set; }
+
         public FootColor FootColor { get; set; }
         public int FootColorId { get; set; }
-        public FabricColor FabricColor { get; set; }
-        public int FabricColorId { get; set; }
         public Proforma Proforma { get; set; }
         public int ProformaId { get; set; }
         public bool Status { get; set; }

@@ -15,13 +15,10 @@ namespace Entity.DTOs.Order
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
+        public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string FabricName { get; set; }
         public string ProductColorName { get; set; }
-        public string FootName { get; set; }
         public string FootColorName { get; set; }
-        public string FabricColorName { get; set; }
-        public int ProformaId { get; set; }
-        public bool Status { get; set; }
     }
 }

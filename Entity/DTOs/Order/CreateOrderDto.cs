@@ -17,9 +17,7 @@ namespace Entity.DTOs.Order
         public int ProductId { get; set; }
         public int FabricId { get; set; }
         public int ProductColorId { get; set; }
-        public int FootId { get; set; }
         public int FootColorId { get; set; }
-        public int FabricColorId { get; set; }
         public int ProformaId { get; set; }
     }
 }
