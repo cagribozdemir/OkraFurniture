@@ -106,26 +106,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProforma(ProformaViewModel proformaViewModel)
+        public IActionResult AddProforma(CreateProformaDto createProformaDto)
         {
-            CreateProformaDto createProformaDto = new CreateProformaDto();
-            
-            createProformaDto.CompanyName = proformaViewModel.CompanyName;
-            createProformaDto.Address = proformaViewModel.Address;
-            
             _proformaService.Add(createProformaDto);
-            if (true)
-            {
-                CreateOrderDto createOrderDto = new CreateOrderDto();
-                createOrderDto.Amount = proformaViewModel.Amount;
-                createOrderDto.Discount = proformaViewModel.Discount;
-                createOrderDto.Price = proformaViewModel.Price;
-                createOrderDto.ProductId = proformaViewModel.ProductId;
-                createOrderDto.ProductColorId = proformaViewModel.ProductColorId;
-                createOrderDto.FootColorId = proformaViewModel.FootColorId;
-                createOrderDto.FabricId = proformaViewModel.FabricId;
-                _orderService.Add(createOrderDto);
-            }
             return RedirectToAction("AddProforma");
         }
 

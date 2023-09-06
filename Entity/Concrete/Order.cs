@@ -26,8 +26,11 @@ namespace Entity.Concrete
 
         public FootColor FootColor { get; set; }
         public int FootColorId { get; set; }
-        public Proforma Proforma { get; set; }
+
         public int ProformaId { get; set; }
+        public Proforma Proforma { get; set; }
+
         public bool Status { get; set; }
+
     }
 }

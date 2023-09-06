@@ -104,7 +104,7 @@ namespace WebApi.Controllers
         public IActionResult AddOrder(CreateOrderDto createOrderDto)
         {
             _orderService.Add(createOrderDto);
-            return RedirectToAction("GetAll");
+            return RedirectToAction("AddProforma","Proformas");
         }
 
         public IActionResult DeleteOrder(int id)

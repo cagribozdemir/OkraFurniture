@@ -45,13 +45,13 @@ namespace Business.Concrete
             productColor.Id = createOrderDto.ProductColorId;
             fabric.Id = createOrderDto.FabricId;
             footColor.Id = createOrderDto.FootColorId;
-            proforma.Id =1;
+            proforma.Id =createOrderDto.ProformaId;
 
             order.Amount = createOrderDto.Amount;
             order.Discount = createOrderDto.Discount;
-            order.Piece = 26;
+            order.Piece = createOrderDto.Amount*4*4;
             order.Price = createOrderDto.Price;
-            order.TotalPrice = 582;
+            order.TotalPrice = createOrderDto.Price*createOrderDto.Amount;
             order.Product = product;
             order.ProductColor = productColor;
             order.Fabric = fabric;
