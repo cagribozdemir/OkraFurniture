@@ -1,13 +1,6 @@
-﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entity.DTOs.Order
+﻿namespace OkraFurnitureUI.Models
 {
-    public class CreateOrderDto : IDto
+    public class ProformaViewModel
     {
         public int Amount { get; set; }
         public int Discount { get; set; }
@@ -16,6 +9,7 @@ namespace Entity.DTOs.Order
         public int FabricId { get; set; }
         public int ProductColorId { get; set; }
         public int FootColorId { get; set; }
-        public int ProformaId { get; set; }
+        public string CompanyName { get; set; }
+        public string Address { get; set; }
     }
 }

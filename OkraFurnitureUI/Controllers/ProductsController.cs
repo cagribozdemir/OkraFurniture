@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var result = _productService.GetAll();
             return View(result);

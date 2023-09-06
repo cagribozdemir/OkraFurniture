@@ -26,8 +26,8 @@ namespace Business.Concrete
 
             proforma.CompanyName = createProformaDto.CompanyName;
             proforma.Address = createProformaDto.Address;
-            proforma.ReceiptNo = createProformaDto.ReceiptNo;
-            proforma.TotalPrice = createProformaDto.TotalPrice;
+            proforma.ReceiptNo = "U152";
+            proforma.TotalPrice = 1562;
             proforma.Date = DateTime.Now;
             proforma.Status = true;
 
@@ -57,15 +57,7 @@ namespace Business.Concrete
 
         public void Update(Proforma proforma)
         {
-            Proforma findProforma = _proformaDal.Get(p => p.Id == proforma.Id);
-
-            findProforma.CompanyName = proforma.CompanyName;
-            findProforma.Address = proforma.Address;
-            findProforma.ReceiptNo = proforma.ReceiptNo;
-            findProforma.TotalPrice = proforma.TotalPrice;
-            findProforma.Date = DateTime.Now;
-
-            _proformaDal.Update(findProforma);
+            _proformaDal.Update(proforma);
             
             //return new SuccessResult(Messages.ProformaUpdated);
         }

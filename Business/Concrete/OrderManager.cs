@@ -47,12 +47,11 @@ namespace Business.Concrete
             footColor.Id = createOrderDto.FootColorId;
             proforma.Id =1;
 
-            product.Id = createOrderDto.ProductId;
             order.Amount = createOrderDto.Amount;
             order.Discount = createOrderDto.Discount;
-            order.Piece = createOrderDto.Piece;
+            order.Piece = 26;
             order.Price = createOrderDto.Price;
-            order.TotalPrice = createOrderDto.TotalPrice;
+            order.TotalPrice = 582;
             order.Product = product;
             order.ProductColor = productColor;
             order.Fabric = fabric;
@@ -108,6 +107,8 @@ namespace Business.Concrete
         public void Update(Order order)
         {
             order.ProformaId = 1;
+            order.Piece = 26;
+            order.TotalPrice = 582;
             _orderDal.Update(order);
             
             //return new SuccessResult(Messages.OrderUpdated);
