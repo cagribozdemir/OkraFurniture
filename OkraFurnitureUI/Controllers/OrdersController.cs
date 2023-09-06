@@ -38,64 +38,68 @@ namespace WebApi.Controllers
             return View(result);
         }
 
-        [HttpGet("id")]
-        public IActionResult GetById(int id)
+        [HttpGet("proformaId")]
+        public IActionResult GetByProformaId(int proformaId)
         {
-            var result = _orderService.GetById(id);
+            var result = _orderService.GetByProformaId(proformaId);
+            ViewBag.ProformaId = proformaId;
             return View(result);
         }
 
         [HttpGet]
-        public IActionResult AddOrder()
+        public IActionResult AddOrder(int id)
         {
+            #region SelectListItem
             List<SelectListItem> valueCategory = (from x in _productService.GetAll()
-                                                     select new SelectListItem
-                                                     {
-                                                         Text = x.CategoryName,
-                                                         Value = x.Id.ToString()
-                                                     }).ToList();
+                                                  select new SelectListItem
+                                                  {
+                                                      Text = x.CategoryName,
+                                                      Value = x.Id.ToString()
+                                                  }).ToList();
             ViewBag.categoryVlc = valueCategory;
 
             List<SelectListItem> valueProductCode = (from x in _productService.GetAll()
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.Code,
-                                                       Value = x.Id.ToString()
-                                                   }).ToList();
+                                                     select new SelectListItem
+                                                     {
+                                                         Text = x.Code,
+                                                         Value = x.Id.ToString()
+                                                     }).ToList();
             ViewBag.productCodeVlc = valueProductCode;
 
             List<SelectListItem> valueProduct = (from x in _productService.GetAll()
-                                                  select new SelectListItem
-                                                  {
-                                                      Text = x.Name,
-                                                      Value = x.Id.ToString()
-                                                  }).ToList();
-            ViewBag.productVlc = valueProduct;
-
-            List<SelectListItem> valueFabric = (from x in _fabricService.GetAll()
-                                                      select new SelectListItem
-                                                      {
-                                                          Text = x.Name,
-                                                          Value = x.Id.ToString()
-                                                      }).ToList();
-            ViewBag.fabricVlc = valueFabric;
-
-            List<SelectListItem> valueProductColor = (from x in _productColorService.GetAll()
                                                  select new SelectListItem
                                                  {
                                                      Text = x.Name,
                                                      Value = x.Id.ToString()
                                                  }).ToList();
-            ViewBag.productColorVlc = valueProductColor;
+            ViewBag.productVlc = valueProduct;
 
-
-            List<SelectListItem> valueFootColor = (from x in _footColorService.GetAll()
+            List<SelectListItem> valueFabric = (from x in _fabricService.GetAll()
                                                 select new SelectListItem
                                                 {
                                                     Text = x.Name,
                                                     Value = x.Id.ToString()
                                                 }).ToList();
+            ViewBag.fabricVlc = valueFabric;
+
+            List<SelectListItem> valueProductColor = (from x in _productColorService.GetAll()
+                                                      select new SelectListItem
+                                                      {
+                                                          Text = x.Name,
+                                                          Value = x.Id.ToString()
+                                                      }).ToList();
+            ViewBag.productColorVlc = valueProductColor;
+
+
+            List<SelectListItem> valueFootColor = (from x in _footColorService.GetAll()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
             ViewBag.footColorVlc = valueFootColor;
+            #endregion
+            ViewBag.proformaId = id;
 
             return View();
         }
@@ -104,7 +108,7 @@ namespace WebApi.Controllers
         public IActionResult AddOrder(CreateOrderDto createOrderDto)
         {
             _orderService.Add(createOrderDto);
-            return RedirectToAction("AddProforma","Proformas");
+            return RedirectToAction("GetByProformaId","Orders", new { proformaId = createOrderDto.ProformaId });
         }
 
         public IActionResult DeleteOrder(int id)

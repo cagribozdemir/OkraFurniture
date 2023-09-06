@@ -27,39 +27,32 @@ namespace Business.Concrete
             proforma.CompanyName = createProformaDto.CompanyName;
             proforma.Address = createProformaDto.Address;
             proforma.ReceiptNo = "U152";
-            proforma.TotalPrice = 1562;
+            proforma.TotalPrice = 0;
             proforma.Date = DateTime.Now;
             proforma.Status = true;
 
             _proformaDal.Add(proforma);
-            
-            //return new SuccessResult(Messages.ProformaAdded);
         }
 
         public void Delete(int id)
         {
             Proforma proforma = _proformaDal.Get(p => p.Id == id);
             _proformaDal.Delete(proforma);
-            //return new SuccessResult(Messages.ProformaDeleted);
         }
 
         public List<Proforma> GetAll()
         {
             return _proformaDal.GetAll();
-            //return new SuccessDataResult<List<Proforma>>(_proformaDal.GetAll(), Messages.ProformaListed);
         }
 
         public Proforma GetById(int id)
         {
             return _proformaDal.Get(c => c.Id == id);
-            //return new SuccessDataResult<Proforma>(_proformaDal.Get(c => c.Id == id));
         }
 
         public void Update(Proforma proforma)
         {
             _proformaDal.Update(proforma);
-            
-            //return new SuccessResult(Messages.ProformaUpdated);
         }
     }
 }

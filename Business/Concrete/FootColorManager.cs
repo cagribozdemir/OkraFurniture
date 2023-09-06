@@ -29,34 +29,27 @@ namespace Business.Concrete
             footColor.Status = true;
 
             _footColorDal.Add(footColor);
-
-            //return new SuccessResult(Messages.FootColorAdded);
         }
 
         public void Delete(int id)
         {
             FootColor footColor = _footColorDal.Get(f => f.Id == id);
             _footColorDal.Delete(footColor);
-            //return new SuccessResult(Messages.FootColorDeleted);
         }
 
         public List<FootColor> GetAll()
         {
             return _footColorDal.GetAll();
-            //return new SuccessDataResult<List<FootColor>>(_footColorDal.GetAll(), Messages.FootColorListed);
         }
 
         public FootColor GetById(int id)
         {
             return _footColorDal.Get(c => c.Id == id);
-            //return new SuccessDataResult<FootColor>(_footColorDal.Get(c => c.Id == id));
         }
 
         public void Update(FootColor footColor)
         {
             _footColorDal.Update(footColor);
-
-            //return new SuccessResult(Messages.FootColorUpdated);
         }
     }
 }

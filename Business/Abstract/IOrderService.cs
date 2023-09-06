@@ -12,6 +12,7 @@ namespace Business.Abstract
     public interface IOrderService
     {
         List<ResultOrderDto> GetAll();
+        List<ResultOrderDto> GetByProformaId(int proformaId);
         Order GetById(int id);
         void Add(CreateOrderDto createOrderDto);
         void Update(Order order);

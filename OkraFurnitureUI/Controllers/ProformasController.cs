@@ -6,6 +6,7 @@ using Entity.DTOs.Proforma;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OkraFurnitureUI.Models;
 
 namespace WebApi.Controllers
@@ -13,21 +14,10 @@ namespace WebApi.Controllers
     public class ProformasController : Controller
     {
         IProformaService _proformaService;
-        IOrderService _orderService;
-        IProductService _productService;
-        IProductColorService _productColorService;
-        IFootColorService _footColorService;
-        IFabricService _fabricService;
 
-        public ProformasController(IProformaService proformaService, IOrderService orderService, IProductService productService,
-            IProductColorService productColorService, IFootColorService footColorService, IFabricService fabricService)
+        public ProformasController(IProformaService proformaService)
         {
             _proformaService = proformaService;
-            _orderService = orderService;
-            _productService = productService;
-            _productColorService = productColorService;
-            _footColorService = footColorService;
-            _fabricService = fabricService;
         }
 
         [HttpGet]
@@ -53,55 +43,6 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult AddProforma()
         {
-            List<SelectListItem> valueCategory = (from x in _productService.GetAll()
-                                                  select new SelectListItem
-                                                  {
-                                                      Text = x.CategoryName,
-                                                      Value = x.Id.ToString()
-                                                  }).ToList();
-            ViewBag.categoryVlc = valueCategory;
-
-            List<SelectListItem> valueProductCode = (from x in _productService.GetAll()
-                                                     select new SelectListItem
-                                                     {
-                                                         Text = x.Code,
-                                                         Value = x.Id.ToString()
-                                                     }).ToList();
-            ViewBag.productCodeVlc = valueProductCode;
-
-            List<SelectListItem> valueProduct = (from x in _productService.GetAll()
-                                                 select new SelectListItem
-                                                 {
-                                                     Text = x.Name,
-                                                     Value = x.Id.ToString()
-                                                 }).ToList();
-            ViewBag.productVlc = valueProduct;
-
-            List<SelectListItem> valueFabric = (from x in _fabricService.GetAll()
-                                                select new SelectListItem
-                                                {
-                                                    Text = x.Name,
-                                                    Value = x.Id.ToString()
-                                                }).ToList();
-            ViewBag.fabricVlc = valueFabric;
-
-            List<SelectListItem> valueProductColor = (from x in _productColorService.GetAll()
-                                                      select new SelectListItem
-                                                      {
-                                                          Text = x.Name,
-                                                          Value = x.Id.ToString()
-                                                      }).ToList();
-            ViewBag.productColorVlc = valueProductColor;
-
-
-            List<SelectListItem> valueFootColor = (from x in _footColorService.GetAll()
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.Name,
-                                                       Value = x.Id.ToString()
-                                                   }).ToList();
-            ViewBag.footColorVlc = valueFootColor;
-
             return View();
         }
 
@@ -109,10 +50,16 @@ namespace WebApi.Controllers
         public IActionResult AddProforma(CreateProformaDto createProformaDto)
         {
             _proformaService.Add(createProformaDto);
-            return RedirectToAction("AddProforma");
+            int proformaId = 1;
+            var proformas = _proformaService.GetAll();
+            foreach (var proforma in proformas)
+            {
+                proformaId = proforma.Id;
+            }
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = proformaId });
         }
 
-        public IActionResult DeleteCategory(int id)
+        public IActionResult DeleteProforma(int id)
         {
             _proformaService.Delete(id);
             return RedirectToAction("Index");

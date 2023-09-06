@@ -31,34 +31,27 @@ namespace Business.Concrete
             fabricColor.Status = true;
 
             _fabricColorDal.Add(fabricColor);
-            
-            //return new SuccessResult(Messages.FabricColorAdded);
         }
 
         public void Delete(int id)
         {
             FabricColor fabricColor = _fabricColorDal.Get(f => f.Id == id);
             _fabricColorDal.Delete(fabricColor);
-            //return new SuccessResult(Messages.FabricColorDeleted);
         }
 
         public List<FabricColor> GetAll()
         {
             return _fabricColorDal.GetAll();
-            //return new SuccessDataResult<List<FabricColor>>(_fabricColorDal.GetAll(), Messages.FabricColorListed);
         }
 
         public FabricColor GetById(int id)
         {
             return _fabricColorDal.Get(c => c.Id == id);
-            //return new SuccessDataResult<FabricColor>(_fabricColorDal.Get(c => c.Id == id));
         }
 
         public void Update(FabricColor fabricColor)
         {
             _fabricColorDal.Update(fabricColor);
-            
-            //return new SuccessResult(Messages.FabricColorUpdated);
         }
 
     }

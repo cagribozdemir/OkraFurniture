@@ -1,10 +1,9 @@
 ﻿@model List<Entity.DTOs.Order.ResultOrderDto>
 @{
-    ViewData["Title"] = "GetAll";
+    ViewData["Title"] = "GetByProformaId";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     int count = 1;
 }
-
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -22,13 +21,13 @@
             </div>
         </div>
     </section>
-    @await Html.PartialAsync("~/Views/Orders/AddOrder.cshtml")
+    
     <section class="content">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="/Orders/AddOrder" class="btn btn-outline-primary">Yeni Sipariş Ekle</a>
+                        <a href="/Orders/AddOrder/@ViewBag.ProformaId" class="btn btn-outline-primary">Sipariş Ekle</a>
                     </div>
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">

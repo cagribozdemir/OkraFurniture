@@ -31,34 +31,27 @@ namespace Business.Concrete
             productColor.Status = true;
 
             _productColorDal.Add(productColor);
-
-            //return new SuccessResult(Messages.ProductColorAdded);
         }
 
         public void Delete(int id)
         {
             ProductColor productColor = _productColorDal.Get(p => p.Id == id);
             _productColorDal.Delete(productColor);
-            //return new SuccessResult(Messages.ProductColorDeleted);
         }
 
         public List<ProductColor> GetAll()
         {
             return _productColorDal.GetAll();
-            //return new SuccessDataResult<List<ProductColor>>(_productColorDal.GetAll(), Messages.ProductColorListed);
         }
 
         public ProductColor GetById(int id)
         {
             return _productColorDal.Get(c => c.Id == id);
-            //return new SuccessDataResult<ProductColor>(_productColorDal.Get(c => c.Id == id));
         }
 
         public void Update(ProductColor productColor)
         {
             _productColorDal.Update(productColor);
-
-            //return new SuccessResult(Messages.ProductColorUpdated);
         }
     }
 }

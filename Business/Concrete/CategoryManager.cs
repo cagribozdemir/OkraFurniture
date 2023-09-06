@@ -34,34 +34,27 @@ namespace Business.Concrete
             category.Status = true;
 
             _categoryDal.Add(category);
-
-            //return new SuccessResult(Messages.CategoryAdded);
         }
 
         public void Delete(int id)
         {
             Category category = _categoryDal.Get(c => c.Id == id);
             _categoryDal.Delete(category);
-            //return new SuccessResult(Messages.CategoryDeleted);
         }
 
         public List<Category> GetAll()
         {
-            return _categoryDal.GetAll();
-            //return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.CategoryListed); 
+            return _categoryDal.GetAll(); 
         }
 
         public Category GetById(int id)
         {
             return _categoryDal.Get(c => c.Id == id);
-            //return new SuccessDataResult<Category>(_categoryDal.Get(c => c.Id == id));
         }
 
         public void Update(Category category)
         {
             _categoryDal.Update(category);
-
-            //return new SuccessResult(Messages.CategoryUpdated);
         }
     }
 }

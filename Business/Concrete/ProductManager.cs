@@ -36,15 +36,12 @@ namespace Business.Concrete
             product.Status = true;
 
             _productDal.Add(product);
-
-            //return new SuccessResult(Messages.ProductAdded);
         }
 
         public void Delete(int id)
         {
             Product product = _productDal.Get(p => p.Id == id);
             _productDal.Delete(product);
-            //return new SuccessResult(Messages.ProductDeleted);
         }
 
         public List<ResultProductDto> GetAll()
@@ -64,8 +61,6 @@ namespace Business.Concrete
             }
 
             return resultProductDtos;
-
-            //return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
         public List<Product> GetAllByCategoryId(int id)
@@ -76,13 +71,11 @@ namespace Business.Concrete
         public Product GetById(int id)
         {
             return _productDal.Get(p => p.Id == id);
-            //return new SuccessDataResult<Product>(_productDal.Get(p => p.Id == id));
         }
 
         public void Update(Product product)
         {
             _productDal.Update(product);       
-            //return new SuccessResult(Messages.ProductUpdated);
         }
     }
 }
