@@ -21,6 +21,7 @@ namespace Business.Concrete
         IProductColorService _productColorService;
         IFootColorService _footColorService;
         IFabricService _fabricService;
+        IProformaService _proformaService;
 
         public OrderManager(IOrderDal orderDal, IProductService productService, IProductColorService productColorService, 
             IFootColorService footColorService, IFabricService fabricService)
@@ -50,8 +51,8 @@ namespace Business.Concrete
             order.Amount = createOrderDto.Amount;
             order.Discount = createOrderDto.Discount;
             order.Piece = createOrderDto.Amount*4*4; //Hesap
-            order.Price = createOrderDto.Price; 
-            order.TotalPrice = createOrderDto.Price*createOrderDto.Amount; 
+            order.Price = createOrderDto.Price;
+            order.TotalPrice = createOrderDto.Price * createOrderDto.Amount * (100 - createOrderDto.Discount) / 100; 
             order.Product = product;
             order.ProductColor = productColor;
             order.Fabric = fabric;
@@ -122,14 +123,13 @@ namespace Business.Concrete
 
         public Order GetById(int id)
         {
-            return _orderDal.Get(c => c.Id == id);
+            return _orderDal.Get(o => o.Id == id);
         }
 
         public void Update(Order order)
         {
-            order.ProformaId = 1;
-            order.Piece = 26;
-            order.TotalPrice = 582;
+            order.Piece = order.Amount * 4 * 4;
+            order.TotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             _orderDal.Update(order);
         }
     }

@@ -4,6 +4,10 @@ using Entity.DTOs.Category;
 using Entity.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PdfSharpCore.Pdf;
+using PdfSharpCore;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
+//using static NuGet.Packaging.PackagingConstants;
 
 namespace WebApi.Controllers
 {
@@ -14,35 +18,29 @@ namespace WebApi.Controllers
         IProductColorService _productColorService;
         IFootColorService _footColorService;
         IFabricService _fabricService;
+        IProformaService _proformaService;
 
         public OrdersController(IOrderService orderService, IProductService productService, IProductColorService productColorService,
-            IFootColorService footColorService, IFabricService fabricService)
+            IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService)
         {
             _orderService = orderService;
             _productService = productService;
             _productColorService = productColorService;
             _footColorService = footColorService;
             _fabricService = fabricService;
+            _proformaService = proformaService;
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var result = _orderService.GetAll();
-            return View(result);
-        }
-
-        [HttpGet("proformaId")]
+        [HttpGet("Orders/GetByProformaId/{proformaId}")]
         public IActionResult GetByProformaId(int proformaId)
         {
             var result = _orderService.GetByProformaId(proformaId);
             ViewBag.ProformaId = proformaId;
+
+            ViewBag.ProformaCompany = _proformaService.GetById(proformaId).CompanyName;
+            ViewBag.ProformaAddress = _proformaService.GetById(proformaId).Address;
+            ViewBag.ProformaDate = _proformaService.GetById(proformaId).Date;
+
             return View(result);
         }
 
@@ -111,15 +109,16 @@ namespace WebApi.Controllers
             return RedirectToAction("GetByProformaId","Orders", new { proformaId = createOrderDto.ProformaId });
         }
 
-        public IActionResult DeleteOrder(int id)
+        public IActionResult DeleteOrder(int id, int proformaId)
         {
             _orderService.Delete(id);
-            return RedirectToAction("GetAll");
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = proformaId });
         }
 
         [HttpGet]
         public IActionResult UpdateOrder(int id)
         {
+            #region SelectListItem
             List<SelectListItem> valueCategory = (from x in _productService.GetAll()
                                                   select new SelectListItem
                                                   {
@@ -168,8 +167,9 @@ namespace WebApi.Controllers
                                                        Value = x.Id.ToString()
                                                    }).ToList();
             ViewBag.footColorVlc = valueFootColor;
-
+            #endregion
             var value = _orderService.GetById(id);
+            ViewBag.proformaId = value.ProformaId;
             return View(value);
         }
 
@@ -177,7 +177,23 @@ namespace WebApi.Controllers
         public IActionResult UpdateOrder(Order order)
         {
             _orderService.Update(order);
-            return RedirectToAction("GetAll");
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = order.ProformaId });
+        }
+
+        [HttpGet("getPdf")]
+        public async Task<IActionResult> GetPdf(int id) 
+        {
+            var document = new PdfDocument();
+            string htmlContent = "<h1>Deneme</h1>";
+            PdfGenerator.AddPdfPages(document, htmlContent, PageSize.A4);
+            byte[]? response = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                document.Save(ms);
+                response = ms.ToArray();
+            }
+            string fileName = "Invoice_" + id + ".pdf";
+            return File(response, "application/pdf", fileName);
         }
     }
 }

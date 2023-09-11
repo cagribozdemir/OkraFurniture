@@ -1,0 +1,84 @@
+﻿@model List<Entity.DTOs.Proforma.ResultProformaDto>
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int count = 1;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Proformalar</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Default/Index">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Proformalar</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/Proformas/AddProforma" class="btn btn-outline-primary">Proforma Oluştur</a>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Fiş Numarası</th>
+                                    <th>Müşteri Adı</th>
+                                    <th>Müşteri Adresi</th>
+                                    <th>Fiş Tarihi</th>
+                                    <th>PDF</th>
+                                    <th>Görüntüle</th>
+                                    <th>Güncelle</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.ReceiptNo</td>
+                                        <td>@item.CompanyName</td>
+                                        <td>@item.Address</td>
+                                        <td>@item.Date</td>
+                                        <td><a href="/Proformas/DownloadProforma/@item.Id" class="btn btn-primary">PDF İndir</a></td>
+                                        <td><a href="/Orders/GetByProformaId/@item.Id" class="btn btn-info">Görüntüle</a></td>
+                                        <td><a href="/Proformas/UpdateProforma/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
+                                        <td><a href="/Proformas/DeleteProforma/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Fiş Numarası</th>
+                                    <th>Müşteri Adı</th>
+                                    <th>Müşteri Adresi</th>
+                                    <th>Fiş Tarihi</th>
+                                    <th>PDF</th>
+                                    <th>Görüntüle</th>
+                                    <th>Güncelle</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

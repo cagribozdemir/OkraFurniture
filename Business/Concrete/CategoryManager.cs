@@ -27,6 +27,7 @@ namespace Business.Concrete
 
         public void Add(CreateCategoryDto createCategoryDto)
         {
+            CheckIfCategoryNameExists(createCategoryDto.Name);
             Category category = new Category();
 
             category.Name = createCategoryDto.Name;
@@ -54,7 +55,17 @@ namespace Business.Concrete
 
         public void Update(Category category)
         {
+            CheckIfCategoryNameExists(category.Name);
             _categoryDal.Update(category);
+        }
+
+        private void CheckIfCategoryNameExists(string categoryName)
+        {
+            var result = _categoryDal.GetAll(p => p.Name == categoryName).Any();
+            if (result)
+            {
+                throw new Exception("Bu kategori adı zaten bulunmaktadır.");
+            }
         }
     }
 }

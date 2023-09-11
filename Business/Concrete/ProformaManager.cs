@@ -40,18 +40,34 @@ namespace Business.Concrete
             _proformaDal.Delete(proforma);
         }
 
-        public List<Proforma> GetAll()
+        public List<ResultProformaDto> GetAll()
         {
-            return _proformaDal.GetAll();
+            List<Proforma> proformas = _proformaDal.GetAll();
+            List<ResultProformaDto> resultProformaDtos = new List<ResultProformaDto>();
+            foreach (var proforma in proformas)
+            {
+                ResultProformaDto resultProformaDto = new ResultProformaDto();
+                resultProformaDto.Id = proforma.Id;
+                resultProformaDto.ReceiptNo = proforma.ReceiptNo;
+                resultProformaDto.CompanyName = proforma.CompanyName;
+                resultProformaDto.Address = proforma.Address;
+                resultProformaDto.Date = proforma.Date;
+
+                resultProformaDtos.Add(resultProformaDto);
+            }
+            return resultProformaDtos;
         }
 
         public Proforma GetById(int id)
         {
-            return _proformaDal.Get(c => c.Id == id);
+            return _proformaDal.Get(p => p.Id == id);
         }
 
         public void Update(Proforma proforma)
         {
+            proforma.ReceiptNo = "U152";
+            proforma.TotalPrice = 0;
+            proforma.Date = DateTime.Now;
             _proformaDal.Update(proforma);
         }
     }

@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -23,6 +25,7 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public void Add(CreateProductDto createProductDto)
         {
             Product product = new Product();
@@ -73,6 +76,7 @@ namespace Business.Concrete
             return _productDal.Get(p => p.Id == id);
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public void Update(Product product)
         {
             _productDal.Update(product);       

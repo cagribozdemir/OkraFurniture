@@ -11,7 +11,7 @@ namespace Business.Abstract
 {
     public interface IProformaService
     {
-        List<Proforma> GetAll();
+        List<ResultProformaDto> GetAll();
         Proforma GetById(int id);
         void Add(CreateProformaDto createProformaDto);
         void Delete(int id);

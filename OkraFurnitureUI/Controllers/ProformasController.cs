@@ -5,8 +5,6 @@ using Entity.DTOs.Order;
 using Entity.DTOs.Proforma;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OkraFurnitureUI.Models;
 
 namespace WebApi.Controllers
@@ -21,22 +19,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult GetAll()
         {
-            var jsonOrders = JsonConvert.SerializeObject(_proformaService.GetAll());
-            return Json(jsonOrders);
-        }
-
-        [HttpGet("id")]
-        public IActionResult GetById(int id)
-        {
-            var result = _proformaService.GetById(id);
+            var result = _proformaService.GetAll();
             return View(result);
         }
 
@@ -62,7 +47,7 @@ namespace WebApi.Controllers
         public IActionResult DeleteProforma(int id)
         {
             _proformaService.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAll", "Proformas");
         }
 
         [HttpGet]
@@ -76,7 +61,7 @@ namespace WebApi.Controllers
         public IActionResult UpdateProforma(Proforma proforma)
         {
             _proformaService.Update(proforma);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = proforma.Id });
         }
     }
 }
