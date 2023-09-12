@@ -20,5 +20,6 @@ namespace Entity.DTOs.Order
         public string FabricName { get; set; }
         public string ProductColorName { get; set; }
         public string FootColorName { get; set; }
+        public string FootName { get; set; }
     }
 }

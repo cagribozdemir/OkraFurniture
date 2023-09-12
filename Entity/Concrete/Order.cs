@@ -17,12 +17,18 @@ namespace Entity.Concrete
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
+
         public Product Product { get; set; }
         public int ProductId { get; set; }
+
         public Fabric Fabric { get; set; }
         public int FabricId { get; set; }
+
         public ProductColor ProductColor { get; set; }
         public int ProductColorId { get; set; }
+
+        public int FootId { get; set; }
+        public Foot Foot { get; set; }
 
         public FootColor FootColor { get; set; }
         public int FootColorId { get; set; }

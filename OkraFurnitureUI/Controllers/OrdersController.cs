@@ -16,12 +16,13 @@ namespace WebApi.Controllers
         IOrderService _orderService;
         IProductService _productService;
         IProductColorService _productColorService;
+        IFootService _footService;
         IFootColorService _footColorService;
         IFabricService _fabricService;
         IProformaService _proformaService;
 
         public OrdersController(IOrderService orderService, IProductService productService, IProductColorService productColorService,
-            IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService)
+            IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService, IFootService footService)
         {
             _orderService = orderService;
             _productService = productService;
@@ -29,6 +30,7 @@ namespace WebApi.Controllers
             _footColorService = footColorService;
             _fabricService = fabricService;
             _proformaService = proformaService;
+            _footService = footService;
         }
 
         [HttpGet("Orders/GetByProformaId/{proformaId}")]
@@ -96,6 +98,14 @@ namespace WebApi.Controllers
                                                        Value = x.Id.ToString()
                                                    }).ToList();
             ViewBag.footColorVlc = valueFootColor;
+
+            List<SelectListItem> valueFoot = (from x in _footService.GetAll()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
+            ViewBag.footVlc = valueFoot;
             #endregion
             ViewBag.proformaId = id;
 
@@ -167,6 +177,14 @@ namespace WebApi.Controllers
                                                        Value = x.Id.ToString()
                                                    }).ToList();
             ViewBag.footColorVlc = valueFootColor;
+
+            List<SelectListItem> valueFoot = (from x in _footService.GetAll()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
+            ViewBag.footVlc = valueFoot;
             #endregion
             var value = _orderService.GetById(id);
             ViewBag.proformaId = value.ProformaId;

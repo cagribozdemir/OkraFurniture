@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Migrations;
 using Entity.Concrete;
 using Entity.DTOs.Proforma;
 using System;
@@ -26,7 +27,7 @@ namespace Business.Concrete
 
             proforma.CompanyName = createProformaDto.CompanyName;
             proforma.Address = createProformaDto.Address;
-            proforma.ReceiptNo = "U152";
+            proforma.ReceiptNo = createProformaDto.ReceiptNo;
             proforma.TotalPrice = 0;
             proforma.Date = DateTime.Now;
             proforma.Status = true;
@@ -54,6 +55,7 @@ namespace Business.Concrete
                 resultProformaDto.CompanyName = proforma.CompanyName;
                 resultProformaDto.Address = proforma.Address;
                 resultProformaDto.Date = proforma.Date;
+                resultProformaDto.TotalPrice = proforma.TotalPrice;
 
                 resultProformaDtos.Add(resultProformaDto);
             }
@@ -67,12 +69,20 @@ namespace Business.Concrete
 
         public IResult Update(Proforma proforma)
         {
-            proforma.ReceiptNo = "U152";
-            proforma.TotalPrice = 0;
+            var result = _proformaDal.Get(p => p.Id == proforma.Id);
+            proforma.ReceiptNo = result.ReceiptNo;
+            proforma.TotalPrice = result.TotalPrice;
             proforma.Date = DateTime.Now;
             _proformaDal.Update(proforma);
 
             return new SuccessResult(Messages.ProformaUpdated);
+        }
+
+        public void UpdateTotalPrice(int id, decimal totalPrice)
+        {
+            var proforma = _proformaDal.Get(p => p.Id == id);
+            proforma.TotalPrice += totalPrice;
+            _proformaDal.Update(proforma);
         }
     }
 }

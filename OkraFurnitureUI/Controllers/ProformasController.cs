@@ -3,6 +3,7 @@ using Entity.Concrete;
 using Entity.DTOs.Category;
 using Entity.DTOs.Order;
 using Entity.DTOs.Proforma;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OkraFurnitureUI.Models;
@@ -12,10 +13,12 @@ namespace WebApi.Controllers
     public class ProformasController : Controller
     {
         IProformaService _proformaService;
+        private readonly UserManager<User> _userManager;
 
-        public ProformasController(IProformaService proformaService)
+        public ProformasController(IProformaService proformaService, UserManager<User> userManager)
         {
             _proformaService = proformaService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -32,16 +35,19 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProforma(CreateProformaDto createProformaDto)
+        public async Task<IActionResult> AddProforma(CreateProformaDto createProformaDto)
         {
-            _proformaService.Add(createProformaDto);
-            int proformaId = 1;
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            char firstChar = values.Name[0];
             var proformas = _proformaService.GetAll();
+            int proformaId = 1;
             foreach (var proforma in proformas)
             {
                 proformaId = proforma.Id;
             }
-            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = proformaId });
+            createProformaDto.ReceiptNo = firstChar + (proformaId+101).ToString();
+            _proformaService.Add(createProformaDto);
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = proformaId+1 });
         }
 
         public IActionResult DeleteProforma(int id)

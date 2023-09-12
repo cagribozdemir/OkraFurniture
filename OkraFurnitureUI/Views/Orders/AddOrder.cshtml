@@ -54,6 +54,11 @@
                     @Html.ValidationMessageFor(x => x.ProductColorId)
                 </div>
                 <div class="form-group col-sm-3">
+                    @Html.Label("Ayak Tipi")
+                    @Html.DropDownListFor(x => x.FootId, (List<SelectListItem>)ViewBag.footVlc, new { @class = "form-control custom-select" })
+                    @Html.ValidationMessageFor(x => x.FootId)
+                </div>
+                <div class="form-group col-sm-3">
                     @Html.Label("Ayak Rengi")
                     @Html.DropDownListFor(x => x.FootColorId, (List<SelectListItem>)ViewBag.footColorVlc, new { @class = "form-control custom-select" })
                     @Html.ValidationMessageFor(x => x.FootColorId)

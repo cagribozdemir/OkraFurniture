@@ -15,6 +15,7 @@ namespace Business.Abstract
         Proforma GetById(int id);
         IResult Add(CreateProformaDto createProformaDto);
         void Delete(int id);
-        IResult Update(Proforma proforma);   
+        IResult Update(Proforma proforma);
+        void UpdateTotalPrice(int id, decimal totalPrice);
     }
 }

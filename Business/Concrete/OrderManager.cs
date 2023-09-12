@@ -19,32 +19,38 @@ namespace Business.Concrete
         IOrderDal _orderDal;
         IProductService _productService;
         IProductColorService _productColorService;
+        IFootService _footService;
         IFootColorService _footColorService;
         IFabricService _fabricService;
         IProformaService _proformaService;
 
         public OrderManager(IOrderDal orderDal, IProductService productService, IProductColorService productColorService, 
-            IFootColorService footColorService, IFabricService fabricService)
+            IFootColorService footColorService, IFabricService fabricService, IFootService footService, IProformaService proformaService)
         {
             _orderDal = orderDal;
             _productService = productService;
             _productColorService = productColorService;
             _footColorService = footColorService;
             _fabricService = fabricService;
+            _footService = footService;
+            _proformaService = proformaService;
         }
 
         public IResult Add(CreateOrderDto createOrderDto)
         {
+            decimal totalPrice = createOrderDto.Price * createOrderDto.Amount * (100 - createOrderDto.Discount) / 100;
             Order order = new Order();
             Product product = new Product();
             ProductColor productColor = new ProductColor();
             Fabric fabric = new Fabric();
+            Foot foot = new Foot();
             FootColor footColor = new FootColor();
             Proforma proforma = new Proforma();
 
             product.Id = createOrderDto.ProductId;
             productColor.Id = createOrderDto.ProductColorId;
             fabric.Id = createOrderDto.FabricId;
+            foot.Id = createOrderDto.FootId;
             footColor.Id = createOrderDto.FootColorId;
             proforma.Id = createOrderDto.ProformaId;
 
@@ -52,22 +58,24 @@ namespace Business.Concrete
             order.Discount = createOrderDto.Discount;
             order.Piece = createOrderDto.Amount*4*4; //Hesap
             order.Price = createOrderDto.Price;
-            order.TotalPrice = createOrderDto.Price * createOrderDto.Amount * (100 - createOrderDto.Discount) / 100; 
+            order.TotalPrice = totalPrice;
             order.Product = product;
             order.ProductColor = productColor;
             order.Fabric = fabric;
+            order.Foot = foot;
             order.FootColor = footColor;
             order.Proforma = proforma;
             order.Status = true;
 
             _orderDal.Add(order);
-
+            _proformaService.UpdateTotalPrice(order.ProformaId, totalPrice);
             return new SuccessResult(Messages.OrderAdded);
         }
 
         public void Delete(int id)
         {
             Order order = _orderDal.Get(o => o.Id == id);
+            _proformaService.UpdateTotalPrice(order.ProformaId, order.TotalPrice * -1);
             _orderDal.Delete(order);
         }
 
@@ -86,6 +94,7 @@ namespace Business.Concrete
                 resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
                 resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
                 resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
                 resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
@@ -112,6 +121,7 @@ namespace Business.Concrete
                 resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
                 resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
                 resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
                 resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
@@ -130,8 +140,13 @@ namespace Business.Concrete
 
         public IResult Update(Order order)
         {
+            decimal proformaTotalPrice = _orderDal.Get(o => o.Id == order.Id).TotalPrice * -1;
+            decimal newTotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             order.Piece = order.Amount * 4 * 4;
-            order.TotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
+            order.TotalPrice = newTotalPrice;
+
+            proformaTotalPrice += newTotalPrice;
+            _proformaService.UpdateTotalPrice(order.ProformaId, proformaTotalPrice);
             _orderDal.Update(order);
 
             return new SuccessResult(Messages.OrderUpdated);
