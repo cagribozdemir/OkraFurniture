@@ -20,7 +20,7 @@ namespace Business.Concrete
         {
             _footColorDal = footColorDal;
         }
-        public void Add(CreateFootColorDto createFootColorDto)
+        public IResult Add(CreateFootColorDto createFootColorDto)
         {
             FootColor footColor = new FootColor();
 
@@ -29,6 +29,8 @@ namespace Business.Concrete
             footColor.Status = true;
 
             _footColorDal.Add(footColor);
+
+            return new SuccessResult(Messages.FootColorAdded);
         }
 
         public void Delete(int id)
@@ -47,9 +49,11 @@ namespace Business.Concrete
             return _footColorDal.Get(c => c.Id == id);
         }
 
-        public void Update(FootColor footColor)
+        public IResult Update(FootColor footColor)
         {
             _footColorDal.Update(footColor);
+
+            return new SuccessResult(Messages.FootColorUpdated);
         }
     }
 }

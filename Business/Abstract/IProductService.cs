@@ -14,8 +14,8 @@ namespace Business.Abstract
         List<ResultProductDto> GetAll();
         List<Product> GetAllByCategoryId(int id);
         Product GetById(int id);
-        void Add(CreateProductDto createProductDto);
-        void Update(Product product);
+        IResult Add(CreateProductDto createProductDto);
+        IResult Update(Product product);
         void Delete(int id);
     }
 }

@@ -22,7 +22,7 @@ namespace Business.Concrete
         {
             _productColorDal = productColorDal;
         }
-        public void Add(CreateProductColorDto createProductColorDto)
+        public IResult Add(CreateProductColorDto createProductColorDto)
         {
             ProductColor productColor = new ProductColor();
 
@@ -31,6 +31,8 @@ namespace Business.Concrete
             productColor.Status = true;
 
             _productColorDal.Add(productColor);
+
+            return new SuccessResult(Messages.ProductColorAdded);
         }
 
         public void Delete(int id)
@@ -49,9 +51,11 @@ namespace Business.Concrete
             return _productColorDal.Get(c => c.Id == id);
         }
 
-        public void Update(ProductColor productColor)
+        public IResult Update(ProductColor productColor)
         {
             _productColorDal.Update(productColor);
+
+            return new SuccessResult(Messages.ProductColorUpdated);
         }
     }
 }

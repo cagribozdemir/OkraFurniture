@@ -13,8 +13,8 @@ namespace Business.Abstract
     {
         List<ResultProformaDto> GetAll();
         Proforma GetById(int id);
-        void Add(CreateProformaDto createProformaDto);
+        IResult Add(CreateProformaDto createProformaDto);
         void Delete(int id);
-        void Update(Proforma proforma);   
+        IResult Update(Proforma proforma);   
     }
 }

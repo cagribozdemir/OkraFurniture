@@ -62,5 +62,6 @@ namespace Business.Constants
         public static string ProformaDeleted = "Proforma silindi";
         public static string ProformaUpdated = "Proforma güncellendi";
 
+        public static string CategoryNameAlreadyExists = "Kategori adı mevcut.";
     }
 }

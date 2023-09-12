@@ -13,8 +13,8 @@ namespace Business.Abstract
     {
         List<Foot> GetAll();
         Foot GetById(int id);
-        void Add(CreateFootDto createFootDto);
-        void Update(Foot foot);
+        IResult Add(CreateFootDto createFootDto);
+        IResult Update(Foot foot);
         void Delete(int id);
     }
 }

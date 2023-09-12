@@ -33,7 +33,7 @@ namespace Business.Concrete
             _fabricService = fabricService;
         }
 
-        public void Add(CreateOrderDto createOrderDto)
+        public IResult Add(CreateOrderDto createOrderDto)
         {
             Order order = new Order();
             Product product = new Product();
@@ -61,6 +61,8 @@ namespace Business.Concrete
             order.Status = true;
 
             _orderDal.Add(order);
+
+            return new SuccessResult(Messages.OrderAdded);
         }
 
         public void Delete(int id)
@@ -126,11 +128,13 @@ namespace Business.Concrete
             return _orderDal.Get(o => o.Id == id);
         }
 
-        public void Update(Order order)
+        public IResult Update(Order order)
         {
             order.Piece = order.Amount * 4 * 4;
             order.TotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             _orderDal.Update(order);
+
+            return new SuccessResult(Messages.OrderUpdated);
         }
     }
 }

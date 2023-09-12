@@ -23,7 +23,7 @@ namespace Business.Concrete
             _footDal = footDal;
         }
 
-        public void Add(CreateFootDto createFootDto)
+        public IResult Add(CreateFootDto createFootDto)
         {
             Foot foot = new Foot();
 
@@ -32,6 +32,8 @@ namespace Business.Concrete
             foot.Status = true;
 
             _footDal.Add(foot);
+
+            return new SuccessResult(Messages.FootAdded);
         }
 
         public void Delete(int id)
@@ -50,9 +52,11 @@ namespace Business.Concrete
             return _footDal.Get(c => c.Id == id);
         }
 
-        public void Update(Foot foot)
+        public IResult Update(Foot foot)
         {
             _footDal.Update(foot);
+
+            return new SuccessResult(Messages.FootUpdated);
         }
     }
 }

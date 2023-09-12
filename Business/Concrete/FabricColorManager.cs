@@ -22,7 +22,7 @@ namespace Business.Concrete
             _fabricColorDal = fabricColorDal;
         }
 
-        public void Add(CreateFabricColorDto createFabricColorDto)
+        public IResult Add(CreateFabricColorDto createFabricColorDto)
         {
             FabricColor fabricColor = new FabricColor();
 
@@ -31,6 +31,8 @@ namespace Business.Concrete
             fabricColor.Status = true;
 
             _fabricColorDal.Add(fabricColor);
+
+            return new SuccessResult(Messages.FabricColorAdded);
         }
 
         public void Delete(int id)
@@ -49,9 +51,10 @@ namespace Business.Concrete
             return _fabricColorDal.Get(c => c.Id == id);
         }
 
-        public void Update(FabricColor fabricColor)
+        public IResult Update(FabricColor fabricColor)
         {
             _fabricColorDal.Update(fabricColor);
+            return new SuccessResult(Messages.FabricColorUpdated);
         }
 
     }

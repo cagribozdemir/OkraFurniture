@@ -13,8 +13,8 @@ namespace Business.Abstract
     {
         List<FootColor> GetAll();
         FootColor GetById(int id);
-        void Add(CreateFootColorDto createFootColorDto);
-        void Update(FootColor footColor);
+        IResult Add(CreateFootColorDto createFootColorDto);
+        IResult Update(FootColor footColor);
         void Delete(int id);
     }
 }

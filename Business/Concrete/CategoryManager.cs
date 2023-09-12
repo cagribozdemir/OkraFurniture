@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -25,9 +28,8 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public void Add(CreateCategoryDto createCategoryDto)
+        public IResult Add(CreateCategoryDto createCategoryDto)
         {
-            CheckIfCategoryNameExists(createCategoryDto.Name);
             Category category = new Category();
 
             category.Name = createCategoryDto.Name;
@@ -35,6 +37,8 @@ namespace Business.Concrete
             category.Status = true;
 
             _categoryDal.Add(category);
+
+            return new SuccessResult(Messages.CategoryAdded);
         }
 
         public void Delete(int id)
@@ -53,19 +57,10 @@ namespace Business.Concrete
             return _categoryDal.Get(c => c.Id == id);
         }
 
-        public void Update(Category category)
+        public IResult Update(Category category)
         {
-            CheckIfCategoryNameExists(category.Name);
             _categoryDal.Update(category);
-        }
-
-        private void CheckIfCategoryNameExists(string categoryName)
-        {
-            var result = _categoryDal.GetAll(p => p.Name == categoryName).Any();
-            if (result)
-            {
-                throw new Exception("Bu kategori adı zaten bulunmaktadır.");
-            }
+            return new SuccessResult(Messages.CategoryUpdated);
         }
     }
 }

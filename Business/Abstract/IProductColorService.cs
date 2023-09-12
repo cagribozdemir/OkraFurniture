@@ -13,8 +13,8 @@ namespace Business.Abstract
     {
         List<ProductColor> GetAll();
         ProductColor GetById(int id);
-        void Add(CreateProductColorDto createProductColorDto);
-        void Update(ProductColor productColor);
+        IResult Add(CreateProductColorDto createProductColorDto);
+        IResult Update(ProductColor productColor);
         void Delete(int id);
     }
 }

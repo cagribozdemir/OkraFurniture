@@ -25,8 +25,7 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
-        public void Add(CreateProductDto createProductDto)
+        public IResult Add(CreateProductDto createProductDto)
         {
             Product product = new Product();
 
@@ -39,6 +38,8 @@ namespace Business.Concrete
             product.Status = true;
 
             _productDal.Add(product);
+
+            return new SuccessResult(Messages.ProductAdded);
         }
 
         public void Delete(int id)
@@ -76,10 +77,11 @@ namespace Business.Concrete
             return _productDal.Get(p => p.Id == id);
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
-        public void Update(Product product)
+        public IResult Update(Product product)
         {
-            _productDal.Update(product);       
+            _productDal.Update(product);
+
+            return new SuccessResult(Messages.ProductUpdated);
         }
     }
 }

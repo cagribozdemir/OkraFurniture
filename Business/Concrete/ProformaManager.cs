@@ -20,7 +20,7 @@ namespace Business.Concrete
         {
             _proformaDal = proformaDal;
         }
-        public void Add(CreateProformaDto createProformaDto)
+        public IResult Add(CreateProformaDto createProformaDto)
         {
             Proforma proforma = new Proforma();
 
@@ -32,6 +32,8 @@ namespace Business.Concrete
             proforma.Status = true;
 
             _proformaDal.Add(proforma);
+
+            return new SuccessResult(Messages.ProformaAdded);
         }
 
         public void Delete(int id)
@@ -63,12 +65,14 @@ namespace Business.Concrete
             return _proformaDal.Get(p => p.Id == id);
         }
 
-        public void Update(Proforma proforma)
+        public IResult Update(Proforma proforma)
         {
             proforma.ReceiptNo = "U152";
             proforma.TotalPrice = 0;
             proforma.Date = DateTime.Now;
             _proformaDal.Update(proforma);
+
+            return new SuccessResult(Messages.ProformaUpdated);
         }
     }
 }

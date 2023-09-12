@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using Entity.Concrete;
 using Entity.DTOs.Category;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddCategory(CreateCategoryDto createCategoryDto)
         {
-            _categoryService.Add(createCategoryDto);
+            var result = _categoryService.Add(createCategoryDto);
             return RedirectToAction("Index");
         }
 
@@ -52,6 +53,7 @@ namespace WebApi.Controllers
         {
             var value = _categoryService.GetById(id);
             return View(value);
+
         }
 
         [HttpPost]

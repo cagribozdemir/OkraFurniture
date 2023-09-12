@@ -22,7 +22,7 @@ namespace Business.Concrete
             _fabricDal = fabricDal;
         }
 
-        public void Add(CreateFabricDto createFabricDto)
+        public IResult Add(CreateFabricDto createFabricDto)
         {
             Fabric fabric = new Fabric();
 
@@ -31,6 +31,8 @@ namespace Business.Concrete
             fabric.Status = true;
 
             _fabricDal.Add(fabric);
+
+            return new SuccessResult(Messages.FabricAdded);
         }
 
         public void Delete(int id)
@@ -49,9 +51,11 @@ namespace Business.Concrete
             return _fabricDal.Get(c => c.Id == id);
         }
 
-        public void Update(Fabric fabric)
+        public IResult Update(Fabric fabric)
         {
             _fabricDal.Update(fabric);
+
+            return new SuccessResult(Messages.FabricUpdated);
         }
     }
 }

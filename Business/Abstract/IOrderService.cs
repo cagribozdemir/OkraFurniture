@@ -14,8 +14,8 @@ namespace Business.Abstract
         List<ResultOrderDto> GetAll();
         List<ResultOrderDto> GetByProformaId(int proformaId);
         Order GetById(int id);
-        void Add(CreateOrderDto createOrderDto);
-        void Update(Order order);
+        IResult Add(CreateOrderDto createOrderDto);
+        IResult Update(Order order);
         void Delete(int id);
     }
 }
