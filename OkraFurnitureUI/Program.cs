@@ -3,10 +3,16 @@ using Autofac;
 using Business.DependencyResolvers.Autofac;
 using FluentValidation.AspNetCore;
 using Business.ValidationRules.FluentValidation;
+using DataAccess.Concrete;
+using Entity.Concrete;
+using OkraFurnitureUI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<Context>()
+    .AddErrorDescriber<CustomIdentityValidator>().AddEntityFrameworkStores<Context>();
 builder.Services.AddControllersWithViews();
 
 
@@ -40,12 +46,13 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseRouting();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Default}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=SignIn}/{id?}");
 
 app.Run();
