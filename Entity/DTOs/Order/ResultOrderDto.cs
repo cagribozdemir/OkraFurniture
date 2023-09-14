@@ -21,5 +21,7 @@ namespace Entity.DTOs.Order
         public string ProductColorName { get; set; }
         public string FootColorName { get; set; }
         public string FootName { get; set; }
+        public string CategoryName { get; set; }
+        public string Description { get; set; }
     }
 }

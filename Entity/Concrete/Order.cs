@@ -17,6 +17,7 @@ namespace Entity.Concrete
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
+        public string Description { get; set; }
 
         public Product Product { get; set; }
         public int ProductId { get; set; }

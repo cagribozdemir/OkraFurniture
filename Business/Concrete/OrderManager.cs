@@ -23,9 +23,11 @@ namespace Business.Concrete
         IFootColorService _footColorService;
         IFabricService _fabricService;
         IProformaService _proformaService;
+        ICategoryService _categoryService;
 
         public OrderManager(IOrderDal orderDal, IProductService productService, IProductColorService productColorService, 
-            IFootColorService footColorService, IFabricService fabricService, IFootService footService, IProformaService proformaService)
+            IFootColorService footColorService, IFabricService fabricService, IFootService footService, IProformaService proformaService,
+            ICategoryService categoryService)
         {
             _orderDal = orderDal;
             _productService = productService;
@@ -34,6 +36,7 @@ namespace Business.Concrete
             _fabricService = fabricService;
             _footService = footService;
             _proformaService = proformaService;
+            _categoryService = categoryService;
         }
 
         public IResult Add(CreateOrderDto createOrderDto)
@@ -58,6 +61,7 @@ namespace Business.Concrete
             order.Discount = createOrderDto.Discount;
             order.Piece = createOrderDto.Amount*4*4; //Hesap
             order.Price = createOrderDto.Price;
+            order.Description = createOrderDto.Description;
             order.TotalPrice = totalPrice;
             order.Product = product;
             order.ProductColor = productColor;
@@ -100,6 +104,8 @@ namespace Business.Concrete
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
+                resultOrderDto.Description = order.Description;
 
                 resultOrderDtos.Add(resultOrderDto);
             }
@@ -127,6 +133,8 @@ namespace Business.Concrete
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
+                resultOrderDto.Description = order.Description;
 
                 resultOrderDtos.Add(resultOrderDto);
             }

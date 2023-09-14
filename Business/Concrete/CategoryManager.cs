@@ -20,12 +20,10 @@ namespace Business.Concrete
     public class CategoryManager : ICategoryService
     {
         ICategoryDal _categoryDal;
-        IMapper _mapper;
 
-        public CategoryManager(ICategoryDal categoryDal, IMapper mapper)
+        public CategoryManager(ICategoryDal categoryDal)
         {
             _categoryDal = categoryDal;
-            _mapper = mapper;
         }
 
         public IResult Add(CreateCategoryDto createCategoryDto)

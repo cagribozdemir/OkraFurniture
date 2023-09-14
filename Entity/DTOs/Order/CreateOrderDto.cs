@@ -18,5 +18,6 @@ namespace Entity.DTOs.Order
         public int FootId { get; set; }
         public int FootColorId { get; set; }
         public int ProformaId { get; set; }
+        public string Description { get; set; }
     }
 }

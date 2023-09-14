@@ -22,6 +22,7 @@ namespace DataAccess.Concrete
         public DbSet<FootColor> FootColors { get; set; }
         public DbSet<Fabric> Fabrics { get; set; }
         public DbSet<FabricColor> FabricColors { get; set; }
+        public DbSet<TableColor> TableColors { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Proforma> Proformas { get; set; }
     }

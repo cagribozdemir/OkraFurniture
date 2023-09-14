@@ -40,6 +40,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<FabricColorManager>().As<IFabricColorService>().SingleInstance();
             builder.RegisterType<EfFabricColorDal>().As<IFabricColorDal>().SingleInstance();
 
+            builder.RegisterType<TableColorManager>().As<ITableColorService>().SingleInstance();
+            builder.RegisterType<EfTableColorDal>().As<ITableColorDal>().SingleInstance();
+
             builder.RegisterType<OrderManager>().As<IOrderService>().SingleInstance();
             builder.RegisterType<EfOrderDal>().As<IOrderDal>();
 

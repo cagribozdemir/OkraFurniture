@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class CategoryValidator : AbstractValidator<Category>
+    public class TableColorValidator : AbstractValidator<TableColor>
     {
-        public CategoryValidator() 
+        public TableColorValidator()
         {
-            RuleFor(c => c.Name).NotEmpty();
-            RuleFor(c => c.Code).NotEmpty();
+            RuleFor(t => t.Name).NotEmpty();
+            RuleFor(t => t.Code).NotEmpty();
         }
     }
 }

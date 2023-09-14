@@ -48,6 +48,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Miktar</th>
+                                    <th>Kategori</th>
                                     <th>Ürün Kodu</th>
                                     <th>Ürün</th>
                                     <th>Kumaş</th>
@@ -58,6 +59,7 @@
                                     <th>İskonto</th>
                                     <th>Fiyat</th>
                                     <th>Tutar</th>
+                                    <th>Açıklama</th>
                                     <th>Sil</th>
                                     <th>Güncelle</th>
                                 </tr>
@@ -68,6 +70,7 @@
                                     <tr>
                                         <td>@count</td>
                                         <td>@item.Amount</td>
+                                        <td>@item.CategoryName</td>
                                         <td>@item.ProductCode</td>
                                         <td>@item.ProductName</td>
                                         <td>@item.FabricName</td>
@@ -78,6 +81,7 @@
                                         <td>@item.Discount</td>
                                         <td>@item.Price</td>
                                         <td>@item.TotalPrice</td>
+                                        <td>@item.Description</td>
                                         <td><a href="/Orders/DeleteOrder?id=@item.Id&&proformaId=@ViewBag.ProformaId" class="btn btn-outline-danger">Sil</a></td>
                                         <td><a href="/Orders/UpdateOrder/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
                                     </tr>
@@ -88,6 +92,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Miktar</th>
+                                    <th>Kategori</th>
                                     <th>Ürün Kodu</th>
                                     <th>Ürün</th>
                                     <th>Kumaş</th>
@@ -98,6 +103,7 @@
                                     <th>İskonto</th>
                                     <th>Fiyat</th>
                                     <th>Tutar</th>
+                                    <th>Açıklama</th>
                                     <th>Sil</th>
                                     <th>Güncelle</th>
                                 </tr>
