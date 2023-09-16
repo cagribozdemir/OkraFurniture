@@ -34,6 +34,7 @@ namespace Business.Concrete
 
             product.Name = createProductDto.Name;
             product.Code = createProductDto.Code;
+            product.Price = createProductDto.Price;
             product.Category = category;
             product.Status = true;
 
@@ -59,6 +60,7 @@ namespace Business.Concrete
                 resultProductDto.Id = product.Id;
                 resultProductDto.Name = product.Name;
                 resultProductDto.Code = product.Code;
+                resultProductDto.Price = product.Price;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);
@@ -67,9 +69,24 @@ namespace Business.Concrete
             return resultProductDtos;
         }
 
-        public List<Product> GetAllByCategoryId(int id)
+        public List<ResultProductDto> GetAllByCategoryId(int id)
         {
-            throw new NotImplementedException();
+            List<ResultProductDto> resultProductDtos = new List<ResultProductDto>();
+            var products = _productDal.GetAll(p => p.CategoryId == id);
+
+            foreach (var product in products)
+            {
+                ResultProductDto resultProductDto = new ResultProductDto();
+                resultProductDto.Id = product.Id;
+                resultProductDto.Name = product.Name;
+                resultProductDto.Code = product.Code;
+                resultProductDto.Price = product.Price;
+                resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
+
+                resultProductDtos.Add(resultProductDto);
+            }
+
+            return resultProductDtos;
         }
 
         public Product GetById(int id)

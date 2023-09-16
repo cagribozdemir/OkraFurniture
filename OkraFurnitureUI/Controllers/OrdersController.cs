@@ -1,13 +1,11 @@
 ﻿using Business.Abstract;
 using Entity.Concrete;
-using Entity.DTOs.Category;
 using Entity.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PdfSharpCore.Pdf;
 using PdfSharpCore;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
-//using static NuGet.Packaging.PackagingConstants;
 
 namespace WebApi.Controllers
 {
@@ -20,9 +18,10 @@ namespace WebApi.Controllers
         IFootColorService _footColorService;
         IFabricService _fabricService;
         IProformaService _proformaService;
+        ICategoryService _categoryService;
 
         public OrdersController(IOrderService orderService, IProductService productService, IProductColorService productColorService,
-            IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService, IFootService footService)
+            IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService, IFootService footService, ICategoryService categoryService)
         {
             _orderService = orderService;
             _productService = productService;
@@ -31,6 +30,7 @@ namespace WebApi.Controllers
             _fabricService = fabricService;
             _proformaService = proformaService;
             _footService = footService;
+            _categoryService = categoryService;
         }
 
         [HttpGet("Orders/GetByProformaId/{proformaId}")]
@@ -49,64 +49,18 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult AddOrder(int id)
         {
-            #region SelectListItem
-            List<SelectListItem> valueCategory = (from x in _productService.GetAll()
-                                                  select new SelectListItem
-                                                  {
-                                                      Text = x.CategoryName,
-                                                      Value = x.Id.ToString()
-                                                  }).ToList();
-            ViewBag.categoryVlc = valueCategory;
+            var categories = _categoryService.GetAll();
+            var fabrics = _fabricService.GetAll();
+            var productColors = _productColorService.GetAll();
+            var footColors = _footColorService.GetAll();
+            var feet = _footService.GetAll();
+            
+            ViewBag.CategoryList = new SelectList(categories, "Id", "Name");
+            ViewBag.FabricList = new SelectList(fabrics, "Id", "Name");
+            ViewBag.ProductColorList = new SelectList(productColors, "Id", "Name");
+            ViewBag.FootColorList = new SelectList(footColors, "Id", "Name");
+            ViewBag.FootList = new SelectList(feet, "Id", "Name");
 
-            List<SelectListItem> valueProductCode = (from x in _productService.GetAll()
-                                                     select new SelectListItem
-                                                     {
-                                                         Text = x.Code,
-                                                         Value = x.Id.ToString()
-                                                     }).ToList();
-            ViewBag.productCodeVlc = valueProductCode;
-
-            List<SelectListItem> valueProduct = (from x in _productService.GetAll()
-                                                 select new SelectListItem
-                                                 {
-                                                     Text = x.Name,
-                                                     Value = x.Id.ToString()
-                                                 }).ToList();
-            ViewBag.productVlc = valueProduct;
-
-            List<SelectListItem> valueFabric = (from x in _fabricService.GetAll()
-                                                select new SelectListItem
-                                                {
-                                                    Text = x.Name,
-                                                    Value = x.Id.ToString()
-                                                }).ToList();
-            ViewBag.fabricVlc = valueFabric;
-
-            List<SelectListItem> valueProductColor = (from x in _productColorService.GetAll()
-                                                      select new SelectListItem
-                                                      {
-                                                          Text = x.Name,
-                                                          Value = x.Id.ToString()
-                                                      }).ToList();
-            ViewBag.productColorVlc = valueProductColor;
-
-
-            List<SelectListItem> valueFootColor = (from x in _footColorService.GetAll()
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.Name,
-                                                       Value = x.Id.ToString()
-                                                   }).ToList();
-            ViewBag.footColorVlc = valueFootColor;
-
-            List<SelectListItem> valueFoot = (from x in _footService.GetAll()
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.Name,
-                                                       Value = x.Id.ToString()
-                                                   }).ToList();
-            ViewBag.footVlc = valueFoot;
-            #endregion
             ViewBag.proformaId = id;
 
             return View();

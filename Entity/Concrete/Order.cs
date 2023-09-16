@@ -13,29 +13,29 @@ namespace Entity.Concrete
         [Key]
         public int Id { get; set; }
         public int Amount { get; set; }
-        public int Discount { get; set; }
+        public decimal Discount { get; set; }
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public Product Product { get; set; }
         public int ProductId { get; set; }
 
-        public Fabric Fabric { get; set; }
-        public int FabricId { get; set; }
-
         public ProductColor ProductColor { get; set; }
         public int ProductColorId { get; set; }
 
-        public int FootId { get; set; }
+        public Fabric Fabric { get; set; }
+        public int FabricId { get; set; }
+
         public Foot Foot { get; set; }
+        public int FootId { get; set; }
 
         public FootColor FootColor { get; set; }
         public int FootColorId { get; set; }
 
-        public int ProformaId { get; set; }
         public Proforma Proforma { get; set; }
+        public int ProformaId { get; set; }
 
         public bool Status { get; set; }
 

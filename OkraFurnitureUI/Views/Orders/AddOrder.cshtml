@@ -24,61 +24,87 @@
     <section class="content">
         <form method="post" asp-action="AddOrder" asp-controller="Orders">
             <div class="row ">
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-3" id="category">
+                    <label>Kategori Adı</label>
+                    <select id="categoryDropdown" class="form-control custom-select">
+                        <option value="">Kategori Seçin</option>
+                        @foreach (var category in ViewBag.CategoryList)
+                        {
+                            <option value="@category.Value">@category.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-sm-3" id="amount">
                     <label>Miktar</label>
                     <input type="text" asp-for="Amount" class="form-control">
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Kategori Adı")
-                    @Html.DropDownListFor(x => x.ProductId, (List<SelectListItem>)ViewBag.categoryVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.ProductId)
+                <div class="form-group col-sm-3" id="product">
+                    <label>Ürün Adı</label>
+                    <select name="ProductId" id="productsDropdown" class="form-control custom-select">
+                        <option value="">Ürün Seçin</option>
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Ürün Kodu")
-                    @Html.DropDownListFor(x => x.ProductId, (List<SelectListItem>)ViewBag.productCodeVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.ProductId)
+                <div class="form-group col-sm-3" id="productCode">
+                    <label>Ürün Kodu</label>
+                    <select id="productCodeDropdown" class="form-control custom-select">
+                        <option value="">Ürün Kodu Seçin</option>
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Ürün Adı")
-                    @Html.DropDownListFor(x => x.ProductId, (List<SelectListItem>)ViewBag.productVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.ProductId)
+                <div class="form-group col-sm-3" id="productColor">
+                    <label>Ürün Rengi</label>
+                    <select id="productColorDropdown" name="ProductColorId" class="form-control custom-select">
+                        <option value="">Ürün Rengi Seçin</option>
+                        @foreach (var productColor in ViewBag.ProductColorList)
+                        {
+                            <option value="@productColor.Value">@productColor.Text</option>
+                        }
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Kumaş Tipi")
-                    @Html.DropDownListFor(x => x.FabricId, (List<SelectListItem>)ViewBag.fabricVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.FabricId)
+                <div class="form-group col-sm-3" id="fabric">
+                    <label>Kumaş Tipi</label>
+                    <select id="fabricDropdown" name="FabricId" class="form-control custom-select">
+                        <option value="">Kumaş Tipi Seçin</option>
+                        @foreach (var fabric in ViewBag.FabricList)
+                        {
+                            <option value="@fabric.Value">@fabric.Text</option>
+                        }
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Ürün Rengi")
-                    @Html.DropDownListFor(x => x.ProductColorId, (List<SelectListItem>)ViewBag.productColorVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.ProductColorId)
+                <div class="form-group col-sm-3" id="foot">
+                    <label>Ayak Tipi</label>
+                    <select id="footDropdown" name="FootId" class="form-control custom-select">
+                        <option value="">Ayak Tipi Seçin</option>
+                        @foreach (var foot in ViewBag.FootList)
+                        {
+                            <option value="@foot.Value">@foot.Text</option>
+                        }
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Ayak Tipi")
-                    @Html.DropDownListFor(x => x.FootId, (List<SelectListItem>)ViewBag.footVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.FootId)
+                <div class="form-group col-sm-3" id="footColor">
+                    <label>Ayak Rengi</label>
+                    <select id="footColorDropdown" name="FootColorId" class="form-control custom-select">
+                        <option value="">Ayak Rengi Seçin</option>
+                        @foreach (var footColor in ViewBag.FootColorList)
+                        {
+                            <option value="@footColor.Value">@footColor.Text</option>
+                        }
+                    </select>
                 </div>
-                <div class="form-group col-sm-3">
-                    @Html.Label("Ayak Rengi")
-                    @Html.DropDownListFor(x => x.FootColorId, (List<SelectListItem>)ViewBag.footColorVlc, new { @class = "form-control custom-select" })
-                    @Html.ValidationMessageFor(x => x.FootColorId)
-                </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-3" id="discount">
                     <label>İskonto</label>
-                    <input type="text" asp-for="Discount" class="form-control">
+                    <input type="text" asp-for="Discount" class="form-control" id="discountCal" value="0">
                 </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-3" id="price">
                     <label>Fiyat</label>
-                    <input type="text" asp-for="Price" class="form-control">
+                    <input type="text" asp-for="Price" class="form-control" id="productPrice" value="">
                 </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-3" id="description">
                     <label>Açıklama</label>
                     <input type="text" asp-for="Description" class="form-control">
                 </div>
-                <div class="form-group col-sm-3">
+                <div class="form-group col-sm-3" id="proforma">
                     <input type="hidden" asp-for="ProformaId" class="form-control" value="@ViewBag.proformaId">
                 </div> 
-
             </div>
             <div class="card-header">
                 <button class="btn btn-success float-right">Sipariş Ekle</button>
@@ -86,3 +112,115 @@
         </form>
     </section>
 </div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#categoryDropdown").change(function () {
+                var selectedCategoryId = $(this).val();
+
+                $.getJSON(`/Products/GetProductsByCategoryId?categoryId=${selectedCategoryId}`, function (data) {
+                    var productsDropdown = $("#productsDropdown");
+                    var productsCodeDropdown = $("#productCodeDropdown");
+                    productsDropdown.empty();
+                    productsDropdown.append('<option value="">Ürün Seçin</option>');
+                    productsCodeDropdown.empty();
+                    productsCodeDropdown.append('<option value="">Ürün Kodu Seçin</option>');
+
+                    $.each(data, function (index, product) {
+                        productsDropdown.append(`<option value="${product.id}" data-product-code="${product.code}">${product.name}</option>`);
+                        productsCodeDropdown.append(`<option value="${product.code}" data-product-id="${product.id}">${product.code}</option>`);
+                    });
+                });
+            });
+
+            $("#productsDropdown").change(function () {
+                var selectedProductCode = $(this).find(':selected').data('product-code');
+                var selectedProductId = $(this).val();
+
+                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                    $("#productPrice").val(product.price);
+                });
+
+                var productCodeDropdown = $("#productCodeDropdown");
+                productCodeDropdown.val(`${selectedProductCode}`);
+            });
+
+            $("#productCodeDropdown").change(function () {
+                var selectedProduct = $(this).find(':selected').data('product-id');
+
+                $.getJSON(`/Products/GetById/${selectedProduct}`, function (product) {
+                    $("#productPrice").val(product.price);
+                });
+
+                var productsDropdown = $("#productsDropdown");
+                productsDropdown.val(`${selectedProduct}`);
+            });
+
+            $("#productPrice").change(function () {
+                var nowPrice = parseFloat($(this).val().replace(',', '.')) || 0;
+                var lastPrice = 0;
+                var selectedProductId = $("#productsDropdown").val();
+
+                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                    lastPrice = parseFloat(product.price) || 0;
+                    var discount = 0;
+                    if (lastPrice != 0) {
+                        discount = (lastPrice - nowPrice) * 100 / lastPrice;
+                    }
+
+                    $("#discountCal").val(discount.toFixed(2).replace('.', ','));
+                });
+            });
+
+            $("#discountCal").change(function () {
+                var selectedProductId = $("#productsDropdown").val();
+                var discount = parseFloat($(this).val().replace(',', '.')) || 0;
+                var nowPrice = 0;
+                var lastPrice = 0;
+
+                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                    lastPrice = parseFloat(product.price) || 0;
+                    if (lastPrice != 0) {
+                        nowPrice = (100 - discount) * lastPrice / 100;
+                    }
+
+                    $("#productPrice").val(nowPrice.toFixed(2).replace('.', ','));
+                });
+            });
+
+
+            $("#categoryDropdown").change(function () {
+                var selectedCategory = $(this).val();
+                var selectedCategoryText = $(this).find('option:selected').text();
+
+                if (selectedCategoryText === "Masa") {
+                    $("#fabric").hide();
+                    $("#foot").hide();
+                }
+                else if (selectedCategoryText === "Tv Ünitesi") {
+                    $("#fabric").hide();
+                    $("#foot").hide();
+                    $("#footColor").hide();
+                }
+                else if (selectedCategoryText === "Orta Sehpa") {
+                    $("#fabric").hide();
+                    $("#foot").hide();
+                    $("#footColor").hide();
+                }
+                else if (selectedCategoryText === "Ayna") {
+                    $("#fabric").hide();
+                    $("#foot").hide();
+                    $("#footColor").hide();
+                }
+                else {
+                    $("#fabric").show();
+                    $("#foot").show();
+                    $("#footColor").show();
+                }
+            });
+        });
+    </script>
+}

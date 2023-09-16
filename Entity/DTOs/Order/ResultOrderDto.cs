@@ -11,7 +11,7 @@ namespace Entity.DTOs.Order
     {
         public int Id { get; set; }
         public int Amount { get; set; }
-        public int Discount { get; set; }
+        public decimal Discount { get; set; }
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
@@ -22,6 +22,6 @@ namespace Entity.DTOs.Order
         public string FootColorName { get; set; }
         public string FootName { get; set; }
         public string CategoryName { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

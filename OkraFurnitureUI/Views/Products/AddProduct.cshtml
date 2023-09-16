@@ -28,9 +28,14 @@
                     <div class="card card-primary">
                         <div class="card-body">
                             <div class="form-group">
-                                @Html.Label("Kategori Adı")
-                                @Html.DropDownListFor(x => x.CategoryId, (List<SelectListItem>)ViewBag.categoryVlc, new { @class = "form-control custom-select" })
-                                @Html.ValidationMessageFor(x => x.CategoryId)
+                                <label>Kategori Adı</label>
+                                <select id="categoryDropdown" name="CategoryId" class="form-control custom-select">
+                                    <option value="">Kategori Seçin</option>
+                                    @foreach (var category in ViewBag.CategoryList)
+                                    {
+                                        <option value="@category.Value">@category.Text</option>
+                                    }
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Ürün Adı</label>
@@ -39,6 +44,10 @@
                             <div class="form-group">
                                 <label>Ürün Kodu</label>
                                 <input type="text" asp-for="Code" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Ürün Fiyatı</label>
+                                <input type="text" asp-for="Price" class="form-control">
                             </div>
                         </div>
                     </div>

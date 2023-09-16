@@ -1,8 +1,6 @@
 ﻿using Business.Abstract;
 using Entity.Concrete;
 using Entity.DTOs.Product;
-using Entity.DTOs.ProductColor;
-using Entity.DTOs.Proforma;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -26,23 +24,18 @@ namespace WebApi.Controllers
             return View(result);
         }
 
-        [HttpGet("id")]
+        [HttpGet("Products/GetById/{id}")]
         public IActionResult GetById(int id)
         {
             var result = _productService.GetById(id);
-            return View(result);
+            return Json(result);
         }
 
         [HttpGet]
         public IActionResult AddProduct()
         {
-            List<SelectListItem> valueCategory = (from x in _categoryService.GetAll()
-                                                  select new SelectListItem
-                                                  {
-                                                      Text = x.Name,
-                                                      Value = x.Id.ToString()
-                                                  }).ToList();
-            ViewBag.categoryVlc = valueCategory;
+            var categories = _categoryService.GetAll();
+            ViewBag.CategoryList = new SelectList(categories, "Id", "Name");
             return View();
         }
 
@@ -78,6 +71,13 @@ namespace WebApi.Controllers
         {
             _productService.Update(product);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult GetProductsByCategoryId(int categoryId)
+        {
+            var products = _productService.GetAllByCategoryId(categoryId);
+            return Json(products);
         }
     }
 }

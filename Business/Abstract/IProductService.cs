@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IProductService
     {
         List<ResultProductDto> GetAll();
-        List<Product> GetAllByCategoryId(int id);
+        List<ResultProductDto> GetAllByCategoryId(int id);
         Product GetById(int id);
         IResult Add(CreateProductDto createProductDto);
         IResult Update(Product product);

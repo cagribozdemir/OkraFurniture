@@ -41,7 +41,7 @@ namespace Business.Concrete
 
         public IResult Add(CreateOrderDto createOrderDto)
         {
-            decimal totalPrice = createOrderDto.Price * createOrderDto.Amount * (100 - createOrderDto.Discount) / 100;
+            decimal totalPrice = createOrderDto.Amount * createOrderDto.Price;
             Order order = new Order();
             Product product = new Product();
             ProductColor productColor = new ProductColor();
@@ -57,9 +57,9 @@ namespace Business.Concrete
             footColor.Id = createOrderDto.FootColorId;
             proforma.Id = createOrderDto.ProformaId;
 
+            order.Piece = createOrderDto.Amount*4*4; //Hesap
             order.Amount = createOrderDto.Amount;
             order.Discount = createOrderDto.Discount;
-            order.Piece = createOrderDto.Amount*4*4; //Hesap
             order.Price = createOrderDto.Price;
             order.Description = createOrderDto.Description;
             order.TotalPrice = totalPrice;
@@ -94,17 +94,17 @@ namespace Business.Concrete
 
                 resultOrderDto.Id = order.Id;
                 resultOrderDto.Amount = order.Amount;
+                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
                 resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
                 resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
-                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
                 resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
-                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
-                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
+                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
+                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
                 resultOrderDto.Description = order.Description;
 
                 resultOrderDtos.Add(resultOrderDto);
@@ -123,18 +123,19 @@ namespace Business.Concrete
 
                 resultOrderDto.Id = order.Id;
                 resultOrderDto.Amount = order.Amount;
-                resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
-                resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
-                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
-                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
-                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
-                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
                 resultOrderDto.Description = order.Description;
+                resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
+                resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
+                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
+                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
+                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
 
                 resultOrderDtos.Add(resultOrderDto);
             }
