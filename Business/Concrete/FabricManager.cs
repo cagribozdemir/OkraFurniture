@@ -46,7 +46,7 @@ namespace Business.Concrete
             return _fabricDal.GetAll();
         }
 
-        public Fabric GetById(int id)
+        public Fabric GetById(int? id)
         {
             return _fabricDal.Get(c => c.Id == id);
         }

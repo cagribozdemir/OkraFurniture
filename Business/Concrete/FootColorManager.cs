@@ -44,7 +44,7 @@ namespace Business.Concrete
             return _footColorDal.GetAll();
         }
 
-        public FootColor GetById(int id)
+        public FootColor GetById(int? id)
         {
             return _footColorDal.Get(c => c.Id == id);
         }

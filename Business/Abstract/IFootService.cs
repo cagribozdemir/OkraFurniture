@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IFootService
     {
         List<Foot> GetAll();
-        Foot GetById(int id);
+        Foot GetById(int? id);
         IResult Add(CreateFootDto createFootDto);
         IResult Update(Foot foot);
         void Delete(int id);

@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IFootColorService
     {
         List<FootColor> GetAll();
-        FootColor GetById(int id);
+        FootColor GetById(int? id);
         IResult Add(CreateFootColorDto createFootColorDto);
         IResult Update(FootColor footColor);
         void Delete(int id);

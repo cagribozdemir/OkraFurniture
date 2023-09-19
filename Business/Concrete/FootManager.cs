@@ -47,7 +47,7 @@ namespace Business.Concrete
             return _footDal.GetAll();
         }
 
-        public Foot GetById(int id)
+        public Foot GetById(int? id)
         {
             return _footDal.Get(c => c.Id == id);
         }

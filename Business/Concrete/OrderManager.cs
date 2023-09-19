@@ -41,38 +41,12 @@ namespace Business.Concrete
 
         public IResult Add(CreateOrderDto createOrderDto)
         {
-            decimal totalPrice = createOrderDto.Amount * createOrderDto.Price;
-            Order order = new Order();
-            Product product = new Product();
-            ProductColor productColor = new ProductColor();
-            Fabric fabric = new Fabric();
-            Foot foot = new Foot();
-            FootColor footColor = new FootColor();
-            Proforma proforma = new Proforma();
-
-            product.Id = createOrderDto.ProductId;
-            productColor.Id = createOrderDto.ProductColorId;
-            fabric.Id = createOrderDto.FabricId;
-            foot.Id = createOrderDto.FootId;
-            footColor.Id = createOrderDto.FootColorId;
-            proforma.Id = createOrderDto.ProformaId;
-
-            order.Piece = createOrderDto.Amount*4*4; //Hesap
-            order.Amount = createOrderDto.Amount;
-            order.Discount = createOrderDto.Discount;
-            order.Price = createOrderDto.Price;
-            order.Description = createOrderDto.Description;
-            order.TotalPrice = totalPrice;
-            order.Product = product;
-            order.ProductColor = productColor;
-            order.Fabric = fabric;
-            order.Foot = foot;
-            order.FootColor = footColor;
-            order.Proforma = proforma;
-            order.Status = true;
+            decimal totalPrice = CalculateTotalPrice(createOrderDto);
+            Order order = MapDtoToOrder(createOrderDto, totalPrice);
 
             _orderDal.Add(order);
             _proformaService.UpdateTotalPrice(order.ProformaId, totalPrice);
+            
             return new SuccessResult(Messages.OrderAdded);
         }
 
@@ -91,7 +65,6 @@ namespace Business.Concrete
             foreach (var order in orders)
             {
                 ResultOrderDto resultOrderDto = new ResultOrderDto();
-
                 resultOrderDto.Id = order.Id;
                 resultOrderDto.Amount = order.Amount;
                 resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
@@ -102,9 +75,11 @@ namespace Business.Concrete
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+
                 resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
                 resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                 resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
+
                 resultOrderDto.Description = order.Description;
 
                 resultOrderDtos.Add(resultOrderDto);
@@ -120,22 +95,38 @@ namespace Business.Concrete
             foreach (var order in orders)
             {
                 ResultOrderDto resultOrderDto = new ResultOrderDto();
+                var categoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
 
                 resultOrderDto.Id = order.Id;
                 resultOrderDto.Amount = order.Amount;
+                resultOrderDto.CategoryName = categoryName;
+                resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
+                resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
+                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+                if (categoryName == "Masa")
+                {
+                    resultOrderDto.FabricName = "---";
+                    resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                    resultOrderDto.FootName = "---";
+                }
+                else if (categoryName == "Tv Ünitesi" || categoryName == "Orta Sehpa" || categoryName == "Ayna")
+                {
+                    resultOrderDto.FabricName = "---";
+                    resultOrderDto.FootColorName = "---";
+                    resultOrderDto.FootName = "---";
+                }
+                else
+                {
+                    resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
+                    resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                    resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
+                }
+
                 resultOrderDto.Description = order.Description;
-                resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
-                resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
-                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
-                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
-                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
-                resultOrderDto.CategoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
 
                 resultOrderDtos.Add(resultOrderDto);
             }
@@ -159,6 +150,31 @@ namespace Business.Concrete
             _orderDal.Update(order);
 
             return new SuccessResult(Messages.OrderUpdated);
+        }
+
+        private Order MapDtoToOrder(CreateOrderDto dto, decimal totalPrice)
+        {
+            return new Order
+            {
+                ProformaId = dto.ProformaId,
+                ProductId = dto.ProductId,
+                ProductColorId = dto.ProductColorId,
+                Amount = dto.Amount,
+                Piece = dto.Amount * 4 * 4, // Hesap
+                Discount = dto.Discount,
+                Price = dto.Price,
+                Description = dto.Description,
+                TotalPrice = totalPrice,
+                Status = true,
+                FabricId = dto.FabricId,
+                FootId = dto.FootId,
+                FootColorId = dto.FootColorId
+            };
+        }
+
+        private decimal CalculateTotalPrice(CreateOrderDto createOrderDto)
+        {
+            return createOrderDto.Amount * createOrderDto.Price;
         }
     }
 }

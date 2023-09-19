@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IFabricService
     {
         List<Fabric> GetAll();
-        Fabric GetById(int id);
+        Fabric GetById(int? id);
         IResult Add(CreateFabricDto createFabricDto);
         IResult Update(Fabric fabric);
         void Delete(int id);
