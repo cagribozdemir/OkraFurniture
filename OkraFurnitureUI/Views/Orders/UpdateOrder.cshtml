@@ -30,7 +30,14 @@
                         <option value="">Kategori Seçin</option>
                         @foreach (var category in ViewBag.CategoryList)
                         {
-                            <option value="@category.Value">@category.Text</option>
+                            if (ViewBag.CategoryName == @category.Text)
+                            {
+                                <option value="@category.Value" selected>@category.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@category.Value">@category.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -42,12 +49,34 @@
                     <label>Ürün Adı</label>
                     <select name="ProductId" id="productsDropdown" class="form-control custom-select">
                         <option value="">Ürün Seçin</option>
+                        @foreach (var product in ViewBag.ProductList)
+                        {
+                            if (ViewBag.ProductName == @product.Text)
+                            {
+                                <option value="@product.Value" selected>@product.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@product.Value">@product.Text</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group col-sm-3" id="productCode">
                     <label>Ürün Kodu</label>
                     <select id="productCodeDropdown" class="form-control custom-select">
                         <option value="">Ürün Kodu Seçin</option>
+                        @foreach (var product in ViewBag.ProductCodeList)
+                        {
+                            if (ViewBag.ProductCode == @product.Text)
+                            {
+                                <option value="@product.Value" selected>@product.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@product.Value">@product.Text</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group col-sm-3" id="productColor">
@@ -56,7 +85,14 @@
                         <option value="">Ürün Rengi Seçin</option>
                         @foreach (var productColor in ViewBag.ProductColorList)
                         {
-                            <option value="@productColor.Value">@productColor.Text</option>
+                            if (ViewBag.ProductColorName == @productColor.Text)
+                            {
+                                <option value="@productColor.Value" selected>@productColor.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@productColor.Value">@productColor.Text</option>
+                            }
                         }
                     </select>
                 </div>
@@ -92,23 +128,23 @@
                 </div>
                 <div class="form-group col-sm-3" id="discount">
                     <label>İskonto</label>
-                    <input type="text" asp-for="Discount" class="form-control" id="discountCal" value="0">
+                    <input type="text" asp-for="Discount" class="form-control" id="discountCal">
                 </div>
                 <div class="form-group col-sm-3" id="price">
                     <label>Fiyat</label>
-                    <input type="text" asp-for="Price" class="form-control" id="productPrice" value="">
+                    <input type="text" asp-for="Price" class="form-control" id="productPrice">
                 </div>
                 <div class="form-group col-sm-3" id="description">
                     <label>Açıklama</label>
                     <input type="text" asp-for="Description" class="form-control">
                 </div>
                 <div class="form-group col-sm-3" id="proforma">
-                    <input type="hidden" asp-for="ProformaId" class="form-control" value="@ViewBag.proformaId">
+                    <input type="hidden" asp-for="ProformaId" class="form-control" value="@ViewBag.ProformaId">
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href="proformaId?proformaId=@ViewBag.proformaId" class="btn btn-secondary">İptal</a>
+                    <a href="proformaId?proformaId=@ViewBag.ProformaId" class="btn btn-secondary">İptal</a>
                     <button class="btn btn-success float-right">Güncelle</button>
                 </div>
             </div>

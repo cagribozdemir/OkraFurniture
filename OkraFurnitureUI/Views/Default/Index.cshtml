@@ -5,7 +5,42 @@
 }
 
 <div class="content-wrapper">
-    <div class="content-header">
+    <!-- beterbocekler.tr.gg Widget Başlangıcı -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget">
+        </div>
+        <div class="tradingview-widget-copyright">
+        </div>
+        <a href="https://tr.tradingview.com/" _fcksavedurl="https://tr.tradingview.com/" rel="noopener" target="_blank"></a>
+    </div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+          {
+          "symbols": [
+            {
+              "proName": "FX_IDC:EURUSD",
+              "title": "EUR/USD"
+            },
+            {
+              "proName": "OANDA:USDTRY",
+              "title": "USD/TRY"
+            },
+            {
+              "proName": "OANDA:EURTRY",
+              "title": "EUR/TRY"
+            },
+            {
+              "proName": "FX_IDC:XAUTRYG",
+              "title": "GRAM ALTIN/TRY"
+            }
+          ],
+          "colorTheme": "light",
+          "isTransparent": false,
+          "displayMode": "adaptive",
+          "locale": "tr"
+        }
+    </script>
+    <!-- beterbocekler.tr.gg Widget sonu -->
+    @* <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -18,7 +53,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -49,7 +84,6 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
                             <h3>44</h3>
@@ -63,7 +97,6 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
                             <h3>65</h3>
@@ -80,4 +113,3 @@
         </div>
     </section>
 </div>
-

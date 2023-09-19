@@ -82,20 +82,28 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult UpdateOrder(int id)
         {
+            var value = _orderService.GetById(id);
+            
             var categories = _categoryService.GetAll();
-            var fabrics = _fabricService.GetAll();
+            var products = _productService.GetAllByCategoryId(_productService.GetById(value.ProductId).CategoryId);
             var productColors = _productColorService.GetAll();
+            var fabrics = _fabricService.GetAll();
             var footColors = _footColorService.GetAll();
             var feet = _footService.GetAll();
 
             ViewBag.CategoryList = new SelectList(categories, "Id", "Name");
-            ViewBag.FabricList = new SelectList(fabrics, "Id", "Name");
+            ViewBag.ProductList = new SelectList(products, "Id", "Name");
+            ViewBag.ProductCodeList = new SelectList(products, "Id", "Code");
             ViewBag.ProductColorList = new SelectList(productColors, "Id", "Name");
+            ViewBag.FabricList = new SelectList(fabrics, "Id", "Name");
             ViewBag.FootColorList = new SelectList(footColors, "Id", "Name");
             ViewBag.FootList = new SelectList(feet, "Id", "Name");
 
-            var value = _orderService.GetById(id);
-            ViewBag.proformaId = value.ProformaId;
+            ViewBag.ProformaId = value.ProformaId;
+            ViewBag.CategoryName = _categoryService.GetById(_productService.GetById(value.ProductId).CategoryId).Name;
+            ViewBag.ProductName = _productService.GetById(value.ProductId).Name;
+            ViewBag.ProductCode = _productService.GetById(value.ProductId).Code;
+            ViewBag.ProductColorName = _productColorService.GetById(value.ProductColorId).Name;
 
             return View(value);
         }
