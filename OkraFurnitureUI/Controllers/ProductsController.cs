@@ -55,14 +55,10 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult UpdateProduct(int id)
         {
-            List<SelectListItem> valueCategory = (from x in _categoryService.GetAll()
-                                                  select new SelectListItem
-                                                  {
-                                                      Text = x.Name,
-                                                      Value = x.Id.ToString()
-                                                  }).ToList();
-            ViewBag.categoryVlc = valueCategory;
+            var categories = _categoryService.GetAll();
+            ViewBag.CategoryList = new SelectList(categories, "Id", "Name");
             var value = _productService.GetById(id);
+            ViewBag.SelectedCategoryName = _categoryService.GetById(value.CategoryId).Name;
             return View(value);
         }
 
