@@ -2,10 +2,8 @@
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entity.Concrete;
 using Entity.DTOs.Order;
-using Entity.DTOs.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +22,11 @@ namespace Business.Concrete
         IFabricService _fabricService;
         IProformaService _proformaService;
         ICategoryService _categoryService;
+        IProductionService _productionService;
 
         public OrderManager(IOrderDal orderDal, IProductService productService, IProductColorService productColorService, 
             IFootColorService footColorService, IFabricService fabricService, IFootService footService, IProformaService proformaService,
-            ICategoryService categoryService)
+            ICategoryService categoryService, IProductionService productionService)
         {
             _orderDal = orderDal;
             _productService = productService;
@@ -37,6 +36,7 @@ namespace Business.Concrete
             _footService = footService;
             _proformaService = proformaService;
             _categoryService = categoryService;
+            _productionService = productionService;
         }
 
         public IResult Add(CreateOrderDto createOrderDto)
@@ -75,6 +75,7 @@ namespace Business.Concrete
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+                resultOrderDto.ProductionName = _productionService.GetById(order.ProductionId).Name;
 
                 resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
                 resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
@@ -103,6 +104,7 @@ namespace Business.Concrete
                 resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
                 resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
                 resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.ProductionName = _productionService.GetById(order.ProductionId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
@@ -142,7 +144,7 @@ namespace Business.Concrete
         {
             decimal proformaTotalPrice = _orderDal.Get(o => o.Id == order.Id).TotalPrice * -1;
             decimal newTotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
-            order.Piece = order.Amount * 4 * 4;
+            order.Piece = order.Amount * _productService.GetById(order.ProductId).Piece;
             order.TotalPrice = newTotalPrice;
 
             proformaTotalPrice += newTotalPrice;
@@ -160,7 +162,7 @@ namespace Business.Concrete
                 ProductId = dto.ProductId,
                 ProductColorId = dto.ProductColorId,
                 Amount = dto.Amount,
-                Piece = dto.Amount * 4 * 4, // Hesap
+                Piece = dto.Amount * _productService.GetById(dto.ProductId).Piece,
                 Discount = dto.Discount,
                 Price = dto.Price,
                 Description = dto.Description,
@@ -168,7 +170,8 @@ namespace Business.Concrete
                 Status = true,
                 FabricId = dto.FabricId,
                 FootId = dto.FootId,
-                FootColorId = dto.FootColorId
+                FootColorId = dto.FootColorId,
+                ProductionId = 1
             };
         }
 

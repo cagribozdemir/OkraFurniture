@@ -1,7 +1,5 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.ValidationRules.FluentValidation;
-using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -35,6 +33,7 @@ namespace Business.Concrete
             product.Name = createProductDto.Name;
             product.Code = createProductDto.Code;
             product.Price = createProductDto.Price;
+            product.Piece = createProductDto.Piece;
             product.Category = category;
             product.Status = true;
 
@@ -61,6 +60,7 @@ namespace Business.Concrete
                 resultProductDto.Name = product.Name;
                 resultProductDto.Code = product.Code;
                 resultProductDto.Price = product.Price;
+                resultProductDto.Piece = product.Piece;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);
@@ -81,6 +81,7 @@ namespace Business.Concrete
                 resultProductDto.Name = product.Name;
                 resultProductDto.Code = product.Code;
                 resultProductDto.Price = product.Price;
+                resultProductDto.Piece = product.Piece;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);

@@ -42,6 +42,7 @@ namespace WebApi.Controllers
             ViewBag.ProformaCompany = _proformaService.GetById(proformaId).CompanyName;
             ViewBag.ProformaAddress = _proformaService.GetById(proformaId).Address;
             ViewBag.ProformaDate = _proformaService.GetById(proformaId).Date;
+            ViewBag.ProformaTotalPrice = _proformaService.GetById(proformaId).TotalPrice;
 
             return View(result);
         }

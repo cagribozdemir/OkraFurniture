@@ -2,7 +2,6 @@
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Migrations;
 using Entity.Concrete;
 using Entity.DTOs.Proforma;
 using System;

@@ -49,6 +49,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProformaManager>().As<IProformaService>().SingleInstance();
             builder.RegisterType<EfProformaDal>().As<IProformaDal>();
 
+            builder.RegisterType<ProductionManager>().As<IProductionService>().SingleInstance();
+            builder.RegisterType<EfProductionDal>().As<IProductionDal>();
+
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

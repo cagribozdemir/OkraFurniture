@@ -25,5 +25,6 @@ namespace DataAccess.Concrete
         public DbSet<TableColor> TableColors { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Proforma> Proformas { get; set; }
+        public DbSet<Production> Productions { get; set; }
     }
 }
