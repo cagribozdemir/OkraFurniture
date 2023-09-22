@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PdfSharpCore.Pdf;
 using PdfSharpCore;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
+using OkraFurnitureUI.Models;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace WebApi.Controllers
         IFabricService _fabricService;
         IProformaService _proformaService;
         ICategoryService _categoryService;
+        
 
         public OrdersController(IOrderService orderService, IProductService productService, IProductColorService productColorService,
             IFootColorService footColorService, IFabricService fabricService, IProformaService proformaService, IFootService footService, ICategoryService categoryService)
@@ -31,6 +33,7 @@ namespace WebApi.Controllers
             _proformaService = proformaService;
             _footService = footService;
             _categoryService = categoryService;
+            
         }
 
         [HttpGet("Orders/GetByProformaId/{proformaId}")]
@@ -93,8 +96,8 @@ namespace WebApi.Controllers
             var feet = _footService.GetAll();
 
             ViewBag.CategoryList = new SelectList(categories, "Id", "Name");
-            ViewBag.ProductList = new SelectList(products, "Id", "Name");
-            ViewBag.ProductCodeList = new SelectList(products, "Id", "Code");
+            ViewBag.ProductList = new SelectList(products, "Code", "Name");
+            ViewBag.ProductCodeList = new SelectList(products, "Name", "Code");
             ViewBag.ProductColorList = new SelectList(productColors, "Id", "Name");
             ViewBag.FabricList = new SelectList(fabrics, "Id", "Name");
             ViewBag.FootColorList = new SelectList(footColors, "Id", "Name");
@@ -116,12 +119,31 @@ namespace WebApi.Controllers
             return RedirectToAction("GetByProformaId", "Orders", new { proformaId = order.ProformaId });
         }
 
-        [HttpGet("getPdf")]
+        [HttpGet("Orders/GetPdfFormat/{proformaId}")]
+        public IActionResult GetPdfFormat(int proformaId)
+        {
+            var result = _orderService.GetByProformaId(proformaId);
+            ViewBag.ProformaId = proformaId;
+
+            ViewBag.ProformaCompany = _proformaService.GetById(proformaId).CompanyName;
+            ViewBag.ProformaAddress = _proformaService.GetById(proformaId).Address;
+            ViewBag.ProformaDate = _proformaService.GetById(proformaId).Date.ToLongDateString();
+            ViewBag.ProformaTotalPrice = _proformaService.GetById(proformaId).TotalPrice;
+            ViewBag.ProformaReceiptNo = _proformaService.GetById(proformaId).ReceiptNo;
+
+            return View(result);
+        }
+
+        [HttpGet("Orders/GetPdf/{id}")]
         public async Task<IActionResult> GetPdf(int id) 
         {
+            var result = _orderService.GetByProformaId(id);
+
+            // HTML içeriğini al
+            //var htmlContent = await _viewRenderer.RenderViewToStringAsync("Orders/GetPdfFormat", result); // "Orders/GetPdfFormat" Razor görünüm yolu olmalıdır.
+
             var document = new PdfDocument();
-            string htmlContent = "<h1>Deneme</h1>";
-            PdfGenerator.AddPdfPages(document, htmlContent, PageSize.A4);
+            //PdfGenerator.AddPdfPages(document, htmlContent, PageSize.A4);            
             byte[]? response = null;
             using (MemoryStream ms = new MemoryStream())
             {

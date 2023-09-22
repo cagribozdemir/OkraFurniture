@@ -53,11 +53,11 @@
                         {
                             if (ViewBag.ProductName == @product.Text)
                             {
-                                <option value="@product.Value" selected>@product.Text</option>
+                                <option value="@product.Text" data-product-code="@product.Value" selected>@product.Text</option>
                             }
                             else
                             {
-                                <option value="@product.Value">@product.Text</option>
+                                <option value="@product.Text" data-product-code="@product.Value">@product.Text</option>
                             }
                         }
                     </select>
@@ -70,11 +70,11 @@
                         {
                             if (ViewBag.ProductCode == @product.Text)
                             {
-                                <option value="@product.Value" selected>@product.Text</option>
+                                <option value="@product.Text" data-product-name="@product.Value" selected>@product.Text</option>
                             }
                             else
                             {
-                                <option value="@product.Value">@product.Text</option>
+                                <option value="@product.Text" data-product-name="@product.Value">@product.Text</option>
                             }
                         }
                     </select>
@@ -168,41 +168,49 @@
                     productsCodeDropdown.append('<option value="">Ürün Kodu Seçin</option>');
 
                     $.each(data, function (index, product) {
-                        productsDropdown.append(`<option value="${product.id}" data-product-code="${product.code}">${product.name}</option>`);
-                        productsCodeDropdown.append(`<option value="${product.code}" data-product-id="${product.id}">${product.code}</option>`);
+                        productsDropdown.append(`<option value="${product.name}" data-product-code="${product.code}">${product.name}</option>`);
+                        productsCodeDropdown.append(`<option value="${product.code}" data-product-name="${product.name}">${product.code}</option>`);
                     });
                 });
+                var discountCal = $("#discountCal");
+                discountCal.val(0);
             });
 
             $("#productsDropdown").change(function () {
                 var selectedProductCode = $(this).find(':selected').data('product-code');
-                var selectedProductId = $(this).val();
 
-                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                $.getJSON(`/Products/GetByCode/${selectedProductCode}`, function (product) {
                     $("#productPrice").val(product.price);
                 });
 
                 var productCodeDropdown = $("#productCodeDropdown");
                 productCodeDropdown.val(`${selectedProductCode}`);
+
+                var discountCal = $("#discountCal");
+                discountCal.val(0);
             });
 
             $("#productCodeDropdown").change(function () {
-                var selectedProduct = $(this).find(':selected').data('product-id');
+                var selectedProduct = $(this).find(':selected').data('product-name');
+                var selectedProductCode = $(this).val();
 
-                $.getJSON(`/Products/GetById/${selectedProduct}`, function (product) {
+                $.getJSON(`/Products/GetByCode/${selectedProductCode}`, function (product) {
                     $("#productPrice").val(product.price);
                 });
 
                 var productsDropdown = $("#productsDropdown");
                 productsDropdown.val(`${selectedProduct}`);
+
+                var discountCal = $("#discountCal");
+                discountCal.val(0);
             });
 
             $("#productPrice").change(function () {
                 var nowPrice = parseFloat($(this).val().replace(',', '.')) || 0;
                 var lastPrice = 0;
-                var selectedProductId = $("#productsDropdown").val();
+                var selectedProductName = $("#productsDropdown").val();
 
-                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                $.getJSON(`/Products/GetByCode/${selectedProductName}`, function (product) {
                     lastPrice = parseFloat(product.price) || 0;
                     var discount = 0;
                     if (lastPrice != 0) {
@@ -214,12 +222,12 @@
             });
 
             $("#discountCal").change(function () {
-                var selectedProductId = $("#productsDropdown").val();
+                var selectedProductName = $("#productsDropdown").val();
                 var discount = parseFloat($(this).val().replace(',', '.')) || 0;
                 var nowPrice = 0;
                 var lastPrice = 0;
 
-                $.getJSON(`/Products/GetById/${selectedProductId}`, function (product) {
+                $.getJSON(`/Products/GetByCode/${selectedProductName}`, function (product) {
                     lastPrice = parseFloat(product.price) || 0;
                     if (lastPrice != 0) {
                         nowPrice = (100 - discount) * lastPrice / 100;

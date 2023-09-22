@@ -146,6 +146,7 @@ namespace Business.Concrete
             decimal newTotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             order.Piece = order.Amount * _productService.GetById(order.ProductId).Piece;
             order.TotalPrice = newTotalPrice;
+            order.ProductionId = 1;
 
             proformaTotalPrice += newTotalPrice;
             _proformaService.UpdateTotalPrice(order.ProformaId, proformaTotalPrice);

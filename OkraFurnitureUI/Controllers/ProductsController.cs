@@ -31,6 +31,13 @@ namespace WebApi.Controllers
             return Json(result);
         }
 
+        [HttpGet("Products/GetByCode/{code}")]
+        public IActionResult GetByCode(string code)
+        {
+            var result = _productService.GetByCode(code);
+            return Json(result);
+        }
+
         [HttpGet]
         public IActionResult AddProduct()
         {

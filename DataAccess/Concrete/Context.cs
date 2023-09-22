@@ -13,7 +13,7 @@ namespace DataAccess.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-TP3O7NB\\SQLEXPRESS;database=OkraFurnitureDb;integrated security=true;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-TP3O7NB\\SQLEXPRESS;database=OkraDb;integrated security=true;");
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }

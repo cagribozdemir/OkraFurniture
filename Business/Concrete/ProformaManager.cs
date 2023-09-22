@@ -27,8 +27,12 @@ namespace Business.Concrete
             proforma.CompanyName = createProformaDto.CompanyName;
             proforma.Address = createProformaDto.Address;
             proforma.ReceiptNo = createProformaDto.ReceiptNo;
-            proforma.TotalPrice = 0;
+            proforma.Description = createProformaDto.Description;
             proforma.Date = DateTime.Now;
+            proforma.Payment = 0;
+            proforma.TotalPrice = 0;
+            proforma.Balance = 0;
+            proforma.Process = 1;
             proforma.Status = true;
 
             _proformaDal.Add(proforma);
@@ -55,6 +59,9 @@ namespace Business.Concrete
                 resultProformaDto.Address = proforma.Address;
                 resultProformaDto.Date = proforma.Date;
                 resultProformaDto.TotalPrice = proforma.TotalPrice;
+                resultProformaDto.Payment = proforma.Payment;
+                resultProformaDto.Balance = proforma.Balance;
+                resultProformaDto.Description = proforma.Description;
 
                 resultProformaDtos.Add(resultProformaDto);
             }
@@ -71,7 +78,10 @@ namespace Business.Concrete
             var result = _proformaDal.Get(p => p.Id == proforma.Id);
             proforma.ReceiptNo = result.ReceiptNo;
             proforma.TotalPrice = result.TotalPrice;
+            proforma.Payment = result.Payment;
+            proforma.Description = result.Description;
             proforma.Date = DateTime.Now;
+            proforma.Balance = result.TotalPrice - result.Payment;
             _proformaDal.Update(proforma);
 
             return new SuccessResult(Messages.ProformaUpdated);

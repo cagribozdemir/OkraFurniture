@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             char firstChar = values.Name[0];
             var proformas = _proformaService.GetAll();
-            int proformaId = 1;
+            int proformaId = 0;
             foreach (var proforma in proformas)
             {
                 proformaId = proforma.Id;

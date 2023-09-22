@@ -15,5 +15,8 @@ namespace Entity.DTOs.Proforma
         public DateTime Date { get; set; }
         public string ReceiptNo { get; set; }
         public decimal TotalPrice { get; set; }
+        public decimal Payment { get; set; }
+        public decimal Balance { get; set; }
+        public string Description { get; set; }
     }
 }

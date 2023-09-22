@@ -8,21 +8,9 @@ using Entity.Concrete;
 using OkraFurnitureUI.Models;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.Configure<RequestLocalizationOptions>(opts =>
-{
-    var supportedCultures = new List<CultureInfo>
-        {
-            new CultureInfo("tr-TR"),
-        };
-
-    opts.DefaultRequestCulture = new RequestCulture("tr-TR");
-    opts.SupportedCultures = supportedCultures;
-    opts.SupportedUICultures = supportedCultures;
-});
 
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<Context>()

@@ -90,6 +90,11 @@ namespace Business.Concrete
             return resultProductDtos;
         }
 
+        public Product GetByCode(string code)
+        {
+            return _productDal.Get(p => p.Code == code);
+        }
+
         public Product GetById(int id)
         {
             return _productDal.Get(p => p.Id == id);
