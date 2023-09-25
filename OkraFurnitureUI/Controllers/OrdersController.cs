@@ -3,10 +3,7 @@ using Entity.Concrete;
 using Entity.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using PdfSharpCore.Pdf;
-using PdfSharpCore;
-using TheArtOfDev.HtmlRenderer.PdfSharp;
-using OkraFurnitureUI.Models;
+using IronPdf;
 
 namespace WebApi.Controllers
 {
@@ -46,6 +43,8 @@ namespace WebApi.Controllers
             ViewBag.ProformaAddress = _proformaService.GetById(proformaId).Address;
             ViewBag.ProformaDate = _proformaService.GetById(proformaId).Date;
             ViewBag.ProformaTotalPrice = _proformaService.GetById(proformaId).TotalPrice;
+            ViewBag.ProformaPayment = _proformaService.GetById(proformaId).Payment;
+            ViewBag.ProformaBalance = _proformaService.GetById(proformaId).Balance;
 
             return View(result);
         }
@@ -135,23 +134,13 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("Orders/GetPdf/{id}")]
-        public async Task<IActionResult> GetPdf(int id) 
+        public IActionResult GetPdf(int id) 
         {
-            var result = _orderService.GetByProformaId(id);
+            ChromePdfRenderer renderer = new ChromePdfRenderer();
+            PdfDocument document = renderer.RenderUrlAsPdf("https://localhost:44391/Orders/GetPdfFormat/" + id).SaveAs("aaa");
+            document.Print();
 
-            // HTML içeriğini al
-            //var htmlContent = await _viewRenderer.RenderViewToStringAsync("Orders/GetPdfFormat", result); // "Orders/GetPdfFormat" Razor görünüm yolu olmalıdır.
-
-            var document = new PdfDocument();
-            //PdfGenerator.AddPdfPages(document, htmlContent, PageSize.A4);            
-            byte[]? response = null;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                document.Save(ms);
-                response = ms.ToArray();
-            }
-            string fileName = "Invoice_" + id + ".pdf";
-            return File(response, "application/pdf", fileName);
+            return RedirectToAction("GetByProformaId", "Orders", new { proformaId = id });
         }
     }
 }

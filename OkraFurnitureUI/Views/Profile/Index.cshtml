@@ -1,0 +1,52 @@
+﻿@model OkraFurnitureUI.Models.UserEditViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Kullanıcı Biligilerimi Düzenle</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Default/Index">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Kullanıcı Biligilerimi Düzenle</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            @Html.Label("Adınız")
+                            <input type="text" asp-for="Name" class="form-control" />
+                            <br />
+                            @Html.Label("Soyadınız")
+                            <input type="text" asp-for="Surname" class="form-control" />
+                            <br />
+                            @Html.Label("Email Adresiniz")
+                            <input type="text" asp-for="Email" class="form-control" />
+                            <br />
+                            @Html.Label("Şifreniz")
+                            <input type="password" asp-for="Password" class="form-control" />
+                            <br />
+                            @Html.Label("Şifre Tekrar")
+                            <input type="password" asp-for="Confirmpassword" class="form-control" />
+                            <br />
+                            <button class="btn btn-primary">Bilgileri Güncelle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

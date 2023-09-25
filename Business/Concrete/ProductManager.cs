@@ -34,6 +34,7 @@ namespace Business.Concrete
             product.Code = createProductDto.Code;
             product.Price = createProductDto.Price;
             product.Piece = createProductDto.Piece;
+            product.Kaputhane = createProductDto.Kaputhane;
             product.Category = category;
             product.Status = true;
 
@@ -61,6 +62,7 @@ namespace Business.Concrete
                 resultProductDto.Code = product.Code;
                 resultProductDto.Price = product.Price;
                 resultProductDto.Piece = product.Piece;
+                resultProductDto.Kaputhane = product.Kaputhane;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);
@@ -82,6 +84,7 @@ namespace Business.Concrete
                 resultProductDto.Code = product.Code;
                 resultProductDto.Price = product.Price;
                 resultProductDto.Piece = product.Piece;
+                resultProductDto.Kaputhane = product.Kaputhane;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);

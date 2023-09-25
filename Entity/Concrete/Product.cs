@@ -17,6 +17,7 @@ namespace Entity.Concrete
         public int Piece { get; set; }
         public decimal Price { get; set; }
         public bool Status { get; set; }
+        public bool Kaputhane { get; set; }
         public Category Category { get; set; }
         public int CategoryId { get; set; }
         public List<Order> Orders { get; set; }

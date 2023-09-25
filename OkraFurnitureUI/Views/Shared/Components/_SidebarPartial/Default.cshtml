@@ -1,7 +1,7 @@
 ﻿@model OkraFurnitureUI.Models.UserViewModel
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="index3.html" class="brand-link">
+    <a href="/Default/Index" class="brand-link">
         <img src="~/images/OkraLogo.jpg" alt="" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">Okra Furniture</span>
@@ -12,7 +12,7 @@
                 <img src="@Model.ImageUrl" class="img-circle elevation-2" alt="">
             </div>
             <div class="info">
-                <a href="#" class="d-block">@Model.FullName</a>
+                <a href="/Profile/Index" class="d-block">@Model.FullName</a>
             </div>
         </div>
         <nav class="mt-2">
@@ -62,7 +62,7 @@
                                 <p>Kumaş Çeşitleri</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a href="/FabricColors/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Kumaş Renkleri</p>
@@ -73,14 +73,14 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tabla Renkleri</p>
                             </a>
-                        </li>
+                        </li> *@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tags"></i>
                         <p>
-                            Satış İşlemleri
+                            Proforma İşlemleri
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -100,19 +100,19 @@
                         <li class="nav-item">
                             <a href="/Proformas/GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>İşleme Alınan Proformalar</p>
+                                <p>İşleme Alınanlar</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/Proformas/GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Kısmı İşlemdeki Proformalar</p>
+                                <p>Kısmı İşlemdekiler</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/Proformas/GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Teslim Proformalar</p>
+                                <p>Teslim Edilenler</p>
                             </a>
                         </li>
                     </ul>

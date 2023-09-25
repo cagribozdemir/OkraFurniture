@@ -34,11 +34,12 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kategori</th>
                                     <th>Ürün Adı</th>
                                     <th>Kod</th>
                                     <th>Parça Sayısı</th>
                                     <th>Fiyat</th>
-                                    <th>Kategori</th>
+                                    <th>Kaputhane Ürünü</th>
                                     <th>Sil</th>
                                     <th>Güncelle</th>
                                 </tr>
@@ -48,11 +49,12 @@
                                 {
                                     <tr>
                                         <td>@count</td>
+                                        <td>@item.CategoryName</td>
                                         <td>@item.Name</td>
                                         <td>@item.Code</td>
                                         <td>@item.Piece</td>
                                         <td>@item.Price</td>
-                                        <td>@item.CategoryName</td>
+                                        <td>@item.Kaputhane</td>
                                         <td><a href="/Products/DeleteProduct/@item.Id" class="btn btn-outline-danger">Sil</a></td>
                                         <td><a href="/Products/UpdateProduct/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
                                     </tr>
@@ -62,11 +64,12 @@
                             <tfoot>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kategori</th>
                                     <th>Ürün Adı</th>
                                     <th>Kod</th>
                                     <th>Parça Sayısı</th>
                                     <th>Fiyat</th>
-                                    <th>Kategori</th>
+                                    <th>Kaputhane Ürünü</th>
                                     <th>Sil</th>
                                     <th>Güncelle</th>
                                 </tr>

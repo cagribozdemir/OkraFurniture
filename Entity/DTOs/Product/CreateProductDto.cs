@@ -14,5 +14,6 @@ namespace Entity.DTOs.Product
         public decimal Price { get; set; }
         public int Piece { get; set; }
         public int CategoryId { get; set; }
+        public bool Kaputhane { get; set; }
     }
 }

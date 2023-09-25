@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Kaynakhane";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int count = 1;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Kaynakhane</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Default/Index">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Kaynakhane</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/Orders/AddOrder/@ViewBag.ProformaId" class="btn btn-outline-primary">Sipariş Ekle</a>
+                    </div>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Ayak Rengi</th>
+                                    <th>Miktar</th>
+                                    <th>Güncelle</th>
+                                    <th>Tamamlandı</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@item.FootColor</td>
+                                        <td>@item.Amount</td>
+                                        <td>@item.Description</td>
+                                        <td><a href="/Orders/DeleteOrder?id=@item.Id&&proformaId=@ViewBag.ProformaId" class="btn btn-outline-danger">Yapıldı</a></td>
+                                        <td><a href="/Orders/UpdateOrder/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
