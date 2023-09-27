@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entity.Concrete;
+using Entity.DTOs.Kaynakhane;
 using Entity.DTOs.Order;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Business.Abstract
     {
         List<ResultOrderDto> GetAll();
         List<ResultOrderDto> GetByProformaId(int proformaId);
+        List<ResultOrderDto> GetByFootId(int footId);
         Order GetById(int id);
         IResult Add(CreateOrderDto createOrderDto);
         IResult Update(Order order);

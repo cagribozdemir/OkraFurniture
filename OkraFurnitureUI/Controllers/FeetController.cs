@@ -1,13 +1,10 @@
 ﻿using Business.Abstract;
 using Entity.Concrete;
-using Entity.DTOs.Category;
 using Entity.DTOs.Foot;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
     public class FeetController : Controller
     {
         IFootService _footService;
@@ -22,6 +19,13 @@ namespace WebApi.Controllers
         {
             var result = _footService.GetAll();
             return View(result);
+        }
+
+        [HttpGet("Feet/GetAll")]
+        public IActionResult GetAll()
+        {
+            var result = _footService.GetAll();
+            return Json(result);
         }
 
         [HttpGet("id")]

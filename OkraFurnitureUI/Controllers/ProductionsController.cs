@@ -1,9 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Abstract;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OkraFurnitureUI.Controllers
 {
     public class ProductionsController : Controller
     {
+        IOrderService _orderService;
+
+        public ProductionsController(IOrderService orderService)
+        {
+            _orderService = orderService;
+        }
+
         [HttpGet]
         public IActionResult Index()
         {

@@ -1,14 +1,9 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Business.DependencyResolvers.Autofac;
-using FluentValidation.AspNetCore;
-using Business.ValidationRules.FluentValidation;
 using DataAccess.Concrete;
 using Entity.Concrete;
 using OkraFurnitureUI.Models;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
-using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 

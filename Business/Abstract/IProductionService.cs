@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entity.Concrete;
+using Entity.DTOs.Kaynakhane;
 using Entity.DTOs.Production;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace Business.Abstract
         IResult Add(CreateProductionDto createProductionDto);
         IResult Update(Production production);
         void Delete(int id);
+
+        
     }
 }

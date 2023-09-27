@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Kaynakhane";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    int count = 1;
 }
 
 <div class="content-wrapper">
@@ -29,32 +28,35 @@
                     <div class="card-header">
                         <a href="/Orders/AddOrder/@ViewBag.ProformaId" class="btn btn-outline-primary">Sipariş Ekle</a>
                     </div>
-                    <div class="card-body">
+                    <div style="display: flex; align-items: flex-start;">
+                    <div class="card-body col-md-2" id="footTypes">
+                    </div>
+                    <div class="card-body col-md-10" id="tables">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Ayak Rengi</th>
                                     <th>Miktar</th>
+                                    <th>Açıklama</th>   
                                     <th>Güncelle</th>
                                     <th>Tamamlandı</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@count</td>
-                                        <td>@item.FootColor</td>
-                                        <td>@item.Amount</td>
-                                        <td>@item.Description</td>
-                                        <td><a href="/Orders/DeleteOrder?id=@item.Id&&proformaId=@ViewBag.ProformaId" class="btn btn-outline-danger">Yapıldı</a></td>
-                                        <td><a href="/Orders/UpdateOrder/@item.Id" class="btn btn-outline-success">Güncelle</a></td>
-                                    </tr>
-                                    count++;
-                                }
+                            <tbody id="dataByFoot">
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Ayak Rengi</th>
+                                    <th>Miktar</th>
+                                    <th>Açıklama</th>
+                                    <th>Güncelle</th>
+                                    <th>Tamamlandı</th>
+                                </tr>
+                            </tfoot>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -62,3 +64,41 @@
     </section>
 </div>
 
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.getJSON(`/Feet/GetAll`, function (data) {
+                var footTypes = $("#footTypes");
+
+                $.each(data, function (index, foot) {
+                    footTypes.append('<a href="#" class="btn btn-primary" style="width:100%;" data-footId="' + foot.id + '">' + foot.name + '</a><br /><br />');
+
+                });
+            });
+
+            $(document).on('click', '#footTypes .btn.btn-primary', function (e) {
+                e.preventDefault();
+
+                var footId = $(this).attr('data-footId');
+                console.log(footId);
+                $.getJSON(`/Orders/GetByFootId/${footId}`, function (data) {
+                    var tbody = $("#dataByFoot");
+                    tbody.empty();
+
+                    $.each(data, function (index, order) {
+                        var row = '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + order.footColorName + '</td>' +
+                            '<td>' + order.amount + '</td>' +
+                            '<td>' + order.description + '</td>' +
+                            '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Yapıldı</a></td>' +
+                            '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+                });
+            });
+        });
+    </script>
+}

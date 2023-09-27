@@ -3,7 +3,8 @@ using Entity.Concrete;
 using Entity.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using IronPdf;
+using Syncfusion.HtmlConverter;
+using Syncfusion.Pdf;
 
 namespace WebApi.Controllers
 {
@@ -47,6 +48,14 @@ namespace WebApi.Controllers
             ViewBag.ProformaBalance = _proformaService.GetById(proformaId).Balance;
 
             return View(result);
+        }
+
+        [HttpGet("Orders/GetByFootId/{footId}")]
+        public IActionResult GetByFootId(int footId)
+        {
+            var result = _orderService.GetByFootId(footId);
+
+            return Json(result);
         }
 
         [HttpGet]
@@ -124,21 +133,45 @@ namespace WebApi.Controllers
             var result = _orderService.GetByProformaId(proformaId);
             ViewBag.ProformaId = proformaId;
 
+            ViewBag.ProformaReceiptNo = _proformaService.GetById(proformaId).ReceiptNo;
             ViewBag.ProformaCompany = _proformaService.GetById(proformaId).CompanyName;
             ViewBag.ProformaAddress = _proformaService.GetById(proformaId).Address;
             ViewBag.ProformaDate = _proformaService.GetById(proformaId).Date.ToLongDateString();
             ViewBag.ProformaTotalPrice = _proformaService.GetById(proformaId).TotalPrice;
-            ViewBag.ProformaReceiptNo = _proformaService.GetById(proformaId).ReceiptNo;
+            ViewBag.Payment = _proformaService.GetById(proformaId).Payment;
+            ViewBag.Balance = _proformaService.GetById(proformaId).Balance;
 
             return View(result);
         }
 
         [HttpGet("Orders/GetPdf/{id}")]
-        public IActionResult GetPdf(int id) 
+        public async Task<IActionResult> GetPdf(int id) 
         {
-            ChromePdfRenderer renderer = new ChromePdfRenderer();
-            PdfDocument document = renderer.RenderUrlAsPdf("https://localhost:44391/Orders/GetPdfFormat/" + id).SaveAs("aaa");
-            document.Print();
+            //HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter(HtmlRenderingEngine.Blink);
+
+            //PdfDocument document = htmlConverter.Convert(pageContent, Path.GetFullPath("Template"));
+
+            //BlinkConverterSettings settings = new BlinkConverterSettings();
+            //settings.ViewPortSize = new Syncfusion.Drawing.Size(1440, 0);
+
+            ////Assign Blink settings to HTML converter.
+            //htmlConverter.ConverterSettings = settings;
+
+            ////Get the current URL.
+            //string url = Microsoft.AspNetCore.Http.Extensions.UriHelper.GetEncodedUrl(HttpContext.Request);
+
+            //url = url.Substring(0, url.LastIndexOf('/'));
+
+            ////Convert URL to PDF.
+            //PdfDocument document = htmlConverter.Convert(url);
+            //MemoryStream stream = new MemoryStream();
+            //document.Save(stream);
+            //return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Pdf, "MVC_view_to_PDF.pdf");
+
+
+            //ChromePdfRenderer renderer = new ChromePdfRenderer();
+            //PdfDocument document = renderer.RenderUrlAsPdf("https://localhost:44391/Orders/GetPdfFormat/" + id).SaveAs("aaa");
+            //document.Print();
 
             return RedirectToAction("GetByProformaId", "Orders", new { proformaId = id });
         }
