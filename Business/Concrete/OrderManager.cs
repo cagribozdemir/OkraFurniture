@@ -172,7 +172,7 @@ namespace Business.Concrete
                 {
                     resultOrderDto.FabricName = "---";
                     resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
-                    resultOrderDto.FootName = "---";
+                    resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
                 }
                 else if (categoryName == "Tv Ünitesi" || categoryName == "Orta Sehpa" || categoryName == "Ayna")
                 {
