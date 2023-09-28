@@ -76,10 +76,17 @@ namespace WebApi.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+        [HttpGet("Products/GetProductsByCategoryId/{categoryId}")]
         public IActionResult GetProductsByCategoryId(int categoryId)
         {
             var products = _productService.GetAllByCategoryId(categoryId);
+            return Json(products);
+        }
+
+        [HttpGet("Products/GetAllByKaputhane/{isKaputhane}")]
+        public IActionResult GetAllByKaputhane(bool isKaputhane)
+        {
+            var products = _productService.GetAllByKaputhane(isKaputhane);
             return Json(products);
         }
     }

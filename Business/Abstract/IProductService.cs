@@ -12,7 +12,8 @@ namespace Business.Abstract
     public interface IProductService
     {
         List<ResultProductDto> GetAll();
-        List<ResultProductDto> GetAllByCategoryId(int id);
+        List<ResultProductDto> GetAllByCategoryId(int categoryId);
+        List<ResultProductDto> GetAllByKaputhane(bool isKaputhane);
         Product GetById(int id);
         Product GetByCode(string code);
         IResult Add(CreateProductDto createProductDto);

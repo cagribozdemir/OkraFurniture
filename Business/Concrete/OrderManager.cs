@@ -3,7 +3,6 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
-using Entity.DTOs.Kaynakhane;
 using Entity.DTOs.Order;
 using System;
 using System.Collections.Generic;
@@ -60,26 +59,12 @@ namespace Business.Concrete
 
         public List<ResultOrderDto> GetAll()
         {
-            List<ResultOrderDto> resultOrderDtos = new List<ResultOrderDto>();
-            var orders = _orderDal.GetAll();
-
-            foreach (var order in orders)
-            {
-                resultOrderDtos.Add(MapOrderToResultDto(order));
-            }
-            return resultOrderDtos;
+            return MapOrderToResultDto(_orderDal.GetAll());
         }
 
         public List<ResultOrderDto> GetByProformaId(int proformmaId)
         {
-            List<ResultOrderDto> resultOrderDtos = new List<ResultOrderDto>();
-            var orders = _orderDal.GetAll(o => o.ProformaId == proformmaId);
-
-            foreach (var order in orders)
-            {
-                resultOrderDtos.Add(MapOrderToResultDto(order));
-            }
-            return resultOrderDtos;
+            return MapOrderToResultDto(_orderDal.GetAll(o => o.ProformaId == proformmaId));
         }
 
         public Order GetById(int id)
@@ -104,14 +89,38 @@ namespace Business.Concrete
 
         public List<ResultOrderDto> GetByFootId(int footId)
         {
-            List<ResultOrderDto> resultOrderDtos = new List<ResultOrderDto>();
             var orders = _orderDal.GetAll(o => o.FootId == footId);
+
+            Dictionary<int?, int> totalAmounts = new Dictionary<int?, int>();
 
             foreach (var order in orders)
             {
-                resultOrderDtos.Add(MapOrderToResultDto(order));
+                if (totalAmounts.ContainsKey(order.FootColorId))
+                {
+                    totalAmounts[order.FootColorId] += order.Amount;
+                }
+                else
+                {
+                    totalAmounts[order.FootColorId] = order.Amount;
+                }
             }
-            return resultOrderDtos;
+
+            List<ResultOrderDto> resultDto = new List<ResultOrderDto>();
+            foreach (var pair in totalAmounts)
+            {
+                resultDto.Add(new ResultOrderDto
+                {
+                    FootColorName = _footColorService.GetById(pair.Key).Name,
+                    Amount = pair.Value
+                });
+            }
+
+            return resultDto;
+        }
+
+        public List<ResultOrderDto> GetByProductId(int productId)
+        {
+            return MapOrderToResultDto(_orderDal.GetAll(o => o.ProductId == productId));
         }
 
         private decimal CalculateTotalPrice(CreateOrderDto createOrderDto)
@@ -140,46 +149,49 @@ namespace Business.Concrete
             };
         }
 
-        private ResultOrderDto MapOrderToResultDto(Order order)
+        private List<ResultOrderDto> MapOrderToResultDto(List<Order> orders)
         {
-            ResultOrderDto resultOrderDto = new ResultOrderDto();
-            var categoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
-
-            resultOrderDto.Id = order.Id;
-            resultOrderDto.Amount = order.Amount;
-            resultOrderDto.CategoryName = categoryName;
-            resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
-            resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
-            resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-            resultOrderDto.ProductionName = _productionService.GetById(order.ProductionId).Name;
-            resultOrderDto.Piece = order.Piece;
-            resultOrderDto.Discount = order.Discount;
-            resultOrderDto.Price = order.Price;
-            resultOrderDto.TotalPrice = order.TotalPrice;
-            if (categoryName == "Masa")
+            List<ResultOrderDto> resultOrderDtos = new List<ResultOrderDto>();
+            foreach (var order in orders)
             {
-                resultOrderDto.FabricName = "---";
-                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
-                resultOrderDto.FootName = "---";
-            }
-            else if (categoryName == "Tv Ünitesi" || categoryName == "Orta Sehpa" || categoryName == "Ayna")
-            {
-                resultOrderDto.FabricName = "---";
-                resultOrderDto.FootColorName = "---";
-                resultOrderDto.FootName = "---";
-            }
-            else
-            {
-                resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
-                resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
-                resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
-            }
+                ResultOrderDto resultOrderDto = new ResultOrderDto();
+                var categoryName = _categoryService.GetById(_productService.GetById(order.ProductId).CategoryId).Name;
 
-            resultOrderDto.Description = order.Description;
+                resultOrderDto.Id = order.Id;
+                resultOrderDto.Amount = order.Amount;
+                resultOrderDto.CategoryName = categoryName;
+                resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
+                resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
+                resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
+                resultOrderDto.ProductionName = _productionService.GetById(order.ProductionId).Name;
+                resultOrderDto.Piece = order.Piece;
+                resultOrderDto.Discount = order.Discount;
+                resultOrderDto.Price = order.Price;
+                resultOrderDto.TotalPrice = order.TotalPrice;
+                if (categoryName == "Masa")
+                {
+                    resultOrderDto.FabricName = "---";
+                    resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                    resultOrderDto.FootName = "---";
+                }
+                else if (categoryName == "Tv Ünitesi" || categoryName == "Orta Sehpa" || categoryName == "Ayna")
+                {
+                    resultOrderDto.FabricName = "---";
+                    resultOrderDto.FootColorName = "---";
+                    resultOrderDto.FootName = "---";
+                }
+                else
+                {
+                    resultOrderDto.FabricName = _fabricService.GetById(order.FabricId).Name;
+                    resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
+                    resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
+                }
 
-            return resultOrderDto;
+                resultOrderDto.Description = order.Description;
+                resultOrderDto.CompanyName = _proformaService.GetById(order.ProformaId).CompanyName;
+                resultOrderDtos.Add(resultOrderDto);
+            }
+            return resultOrderDtos;
         }
-
-        
     }
 }

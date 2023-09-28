@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Kaynakhane";
+    ViewData["Title"] = "Kaputhane";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -9,12 +9,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Kaynakhane</h1>
+                    <h1>Kaputhane</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/Default/Index">Ana Sayfa</a></li>
-                        <li class="breadcrumb-item active">Kaynakhane</li>
+                        <li class="breadcrumb-item active">Kaputhane</li>
                     </ol>
                 </div>
             </div>
@@ -29,28 +29,34 @@
                         <a href="/Orders/AddOrder/@ViewBag.ProformaId" class="btn btn-outline-primary">Sipariş Ekle</a>
                     </div>
                     <div style="display: flex; align-items: flex-start;">
-                    <div class="card-body col-md-2" id="footTypes">
+                    <div class="card-body col-md-2" id="productTypes">
                     </div>
                     <div class="card-body col-md-10" id="tables">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Ayak Rengi</th>
-                                    <th>Miktar</th> 
+                                    <th>Adet</th>
+                                    <th>Kumaş</th>
+                                    <th>Renk</th>
+                                    <th>Metre</th>
+                                    <th>Firma</th>
                                     <th>Güncelle</th>
                                     <th>Tamamlandı</th>
                                 </tr>
                             </thead>
-                            <tbody id="dataByFoot">
+                                <tbody id="dataByProduct">
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Ayak Rengi</th>
-                                    <th>Miktar</th>
-                                    <th>Güncelle</th>
-                                    <th>Tamamlandı</th>
+                                        <th>No</th>
+                                        <th>Adet</th>
+                                        <th>Kumaş</th>
+                                        <th>Renk</th>
+                                        <th>Metre</th>
+                                        <th>Firma</th>
+                                        <th>Güncelle</th>
+                                        <th>Tamamlandı</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -66,28 +72,31 @@
     {
     <script type="text/javascript">
         $(document).ready(function () {
-            $.getJSON(`/Feet/GetAll`, function (data) {
-                var footTypes = $("#footTypes");
+            $.getJSON(`/Products/GetAllByKaputhane/True`, function (data) {
+                var productTypes = $("#productTypes");
 
-                $.each(data, function (index, foot) {
-                    footTypes.append('<a href="#" class="btn btn-primary" style="width:100%;" data-footId="' + foot.id + '">' + foot.name + '</a><br /><br />');
+                $.each(data, function (index, product) {
+                    productTypes.append('<a href="#" class="btn btn-primary" style="width:100%;" data-productId="' + product.id + '">' + product.name + '</a><br /><br />');
 
                 });
             });
 
-            $(document).on('click', '#footTypes .btn.btn-primary', function (e) {
+            $(document).on('click', '#productTypes .btn.btn-primary', function (e) {
                 e.preventDefault();
 
-                var footId = $(this).attr('data-footId');
-                $.getJSON(`/Orders/GetByFootId/${footId}`, function (data) {
-                    var tbody = $("#dataByFoot");
+                var productId = $(this).attr('data-productId');
+                $.getJSON(`/Orders/GetByProductId/${productId}`, function (data) {
+                    var tbody = $("#dataByProduct");
                     tbody.empty();
 
                     $.each(data, function (index, order) {
                         var row = '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
-                            '<td>' + order.footColorName + '</td>' +
                             '<td>' + order.amount + '</td>' +
+                            '<td>' + order.fabricName + '</td>' +
+                            '<td>' + order.productColorName + '</td>' +
+                            '<td>' + 25 + '</td>' + //buranın hesabını sor ve işle
+                            '<td>' + order.companyName + '</td>' +
                             '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
                             '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';

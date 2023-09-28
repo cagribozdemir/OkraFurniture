@@ -3,6 +3,7 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
+using Entity.DTOs.Order;
 using Entity.DTOs.Product;
 using System;
 using System.Collections.Generic;
@@ -51,46 +52,17 @@ namespace Business.Concrete
 
         public List<ResultProductDto> GetAll()
         {
-            List<ResultProductDto> resultProductDtos = new List<ResultProductDto>();
-            var products = _productDal.GetAll();
-
-            foreach (var product in products)
-            {
-                ResultProductDto resultProductDto = new ResultProductDto();
-                resultProductDto.Id = product.Id;
-                resultProductDto.Name = product.Name;
-                resultProductDto.Code = product.Code;
-                resultProductDto.Price = product.Price;
-                resultProductDto.Piece = product.Piece;
-                resultProductDto.Kaputhane = product.Kaputhane;
-                resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
-
-                resultProductDtos.Add(resultProductDto);
-            }
-
-            return resultProductDtos;
+            return MapProductToResultDtos(_productDal.GetAll());
         }
 
-        public List<ResultProductDto> GetAllByCategoryId(int id)
+        public List<ResultProductDto> GetAllByCategoryId(int categoryId)
         {
-            List<ResultProductDto> resultProductDtos = new List<ResultProductDto>();
-            var products = _productDal.GetAll(p => p.CategoryId == id);
+            return MapProductToResultDtos(_productDal.GetAll(p => p.CategoryId == categoryId));
+        }
 
-            foreach (var product in products)
-            {
-                ResultProductDto resultProductDto = new ResultProductDto();
-                resultProductDto.Id = product.Id;
-                resultProductDto.Name = product.Name;
-                resultProductDto.Code = product.Code;
-                resultProductDto.Price = product.Price;
-                resultProductDto.Piece = product.Piece;
-                resultProductDto.Kaputhane = product.Kaputhane;
-                resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
-
-                resultProductDtos.Add(resultProductDto);
-            }
-
-            return resultProductDtos;
+        public List<ResultProductDto> GetAllByKaputhane(bool isKaputhane)
+        {
+            return MapProductToResultDtos(_productDal.GetAll(p => p.Kaputhane == isKaputhane));
         }
 
         public Product GetByCode(string code)
@@ -108,6 +80,29 @@ namespace Business.Concrete
             _productDal.Update(product);
 
             return new SuccessResult(Messages.ProductUpdated);
+        }
+
+        private List<ResultProductDto> MapProductToResultDtos(List<Product> products)
+        {
+            List<ResultProductDto> resultProductDtos = new List<ResultProductDto>();
+
+            foreach (var product in products)
+            {
+                ResultProductDto resultProductDto = new ResultProductDto();
+                resultProductDto.Id = product.Id;
+                resultProductDto.Name = product.Name;
+                resultProductDto.Code = product.Code;
+                resultProductDto.Price = product.Price;
+                resultProductDto.Piece = product.Piece;
+                resultProductDto.Kaputhane = product.Kaputhane;
+                resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
+
+                resultProductDtos.Add(resultProductDto);
+            }
+
+            
+
+            return resultProductDtos;
         }
     }
 }

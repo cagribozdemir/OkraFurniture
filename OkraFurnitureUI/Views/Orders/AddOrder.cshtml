@@ -124,7 +124,7 @@
             $("#categoryDropdown").change(function () {
                 var selectedCategoryId = $(this).val();
 
-                $.getJSON(`/Products/GetProductsByCategoryId?categoryId=${selectedCategoryId}`, function (data) {
+                $.getJSON(`/Products/GetProductsByCategoryId/${selectedCategoryId}`, function (data) {
                     var productsDropdown = $("#productsDropdown");
                     var productsCodeDropdown = $("#productCodeDropdown");
                     productsDropdown.empty();
