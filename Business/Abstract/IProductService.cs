@@ -13,6 +13,7 @@ namespace Business.Abstract
     {
         List<ResultProductDto> GetAll();
         List<ResultProductDto> GetAllByCategoryId(int categoryId);
+        List<ResultProductDto> GetAllByCategoryName(string categoryName);
         List<ResultProductDto> GetAllByKaputhane(bool isKaputhane);
         Product GetById(int id);
         Product GetByCode(string code);

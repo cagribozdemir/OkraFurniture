@@ -13,6 +13,7 @@ namespace Business.Abstract
     {
         List<Category> GetAll();
         Category GetById(int id);
+        Category GetByName(string name);
         IResult Add(CreateCategoryDto createCategoryDto);
         IResult Update(Category category);
         void Delete(int id);

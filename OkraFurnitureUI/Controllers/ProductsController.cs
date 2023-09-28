@@ -89,5 +89,12 @@ namespace WebApi.Controllers
             var products = _productService.GetAllByKaputhane(isKaputhane);
             return Json(products);
         }
+
+        [HttpGet("Products/GetProductsByCategoryName/{categoryName}")]
+        public IActionResult GetProductsByCategoryName(string categoryName)
+        {
+            var products = _productService.GetAllByCategoryName(categoryName);
+            return Json(products);
+        }
     }
 }

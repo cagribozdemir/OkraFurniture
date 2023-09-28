@@ -55,6 +55,11 @@ namespace Business.Concrete
             return _categoryDal.Get(c => c.Id == id);
         }
 
+        public Category GetByName(string name)
+        {
+            return _categoryDal.Get(c => c.Name == name);
+        }
+
         public IResult Update(Category category)
         {
             _categoryDal.Update(category);

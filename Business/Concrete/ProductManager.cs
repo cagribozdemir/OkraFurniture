@@ -60,6 +60,12 @@ namespace Business.Concrete
             return MapProductToResultDtos(_productDal.GetAll(p => p.CategoryId == categoryId));
         }
 
+        public List<ResultProductDto> GetAllByCategoryName(string categoryName)
+        {
+            Category category = _categoryService.GetByName(categoryName);
+            return MapProductToResultDtos(_productDal.GetAll(p => p.CategoryId == category.Id));
+        }
+
         public List<ResultProductDto> GetAllByKaputhane(bool isKaputhane)
         {
             return MapProductToResultDtos(_productDal.GetAll(p => p.Kaputhane == isKaputhane));

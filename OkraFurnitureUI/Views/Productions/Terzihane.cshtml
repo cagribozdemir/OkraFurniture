@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "Kaputhane";
+    ViewData["Title"] = "Terzihane";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -29,40 +30,42 @@
                         <a href="/Orders/AddOrder/@ViewBag.ProformaId" class="btn btn-outline-primary">Sipariş Ekle</a>
                     </div>
                     <div style="display: flex; align-items: flex-start;">
-                    <div class="card-body col-md-2" id="productTypes">
-                    </div>
-                    <div class="card-body col-md-10" id="tables">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Adet</th>
-                                    <th>Model</th>
-                                    <th>Kumaş</th>
-                                    <th>Renk</th>
-                                    <th>Metre</th>
-                                    <th>Firma</th>
-                                    <th>Güncelle</th>
-                                    <th>Tamamlandı</th>
-                                </tr>
-                            </thead>
+                        <div class="card-body col-md-2" id="productTypes">
+                        </div>
+                        <div class="card-body col-md-10" id="tables">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Firma</th>
+                                        <th>Model</th>
+                                        <th>Kumaş</th>
+                                        <th>Renk</th>
+                                        <th>Adet</th>
+                                        <th>Fitil</th>
+                                        <th>Ayak Tipi ve Rengi</th>
+                                        <th>Güncelle</th>
+                                        <th>Tamamlandı</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="dataByProduct">
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Adet</th>
-                                    <th>Model</th>
-                                    <th>Kumaş</th>
-                                    <th>Renk</th>
-                                    <th>Metre</th>
-                                    <th>Firma</th>
-                                    <th>Güncelle</th>
-                                    <th>Tamamlandı</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Firma</th>
+                                        <th>Model</th>
+                                        <th>Kumaş</th>
+                                        <th>Renk</th>
+                                        <th>Adet</th>
+                                        <th>Fitil</th>
+                                        <th>Ayak Tipi ve Rengi</th>
+                                        <th>Güncelle</th>
+                                        <th>Tamamlandı</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +77,7 @@
     {
     <script type="text/javascript">
         $(document).ready(function () {
-            $.getJSON(`/Products/GetAllByKaputhane/True`, function (data) {
+            $.getJSON(`/Products/GetProductsByCategoryName/Sandalye`, function (data) {
                 var productTypes = $("#productTypes");
 
                 $.each(data, function (index, product) {
@@ -94,12 +97,13 @@
                     $.each(data, function (index, order) {
                         var row = '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
-                            '<td>' + order.amount + '</td>' +
+                            '<td>' + order.companyName + '</td>' +
                             '<td>' + order.productName + '</td>' +
                             '<td>' + order.fabricName + '</td>' +
                             '<td>' + order.productColorName + '</td>' +
-                            '<td>' + 25 + '</td>' + //buranın hesabını sor ve işle
-                            '<td>' + order.companyName + '</td>' +
+                            '<td>' + order.amount + '</td>' +
+                            '<td>' + 25 + '</td>' + //burayı sor ve işle
+                            '<td>' + order.footName + ' / ' + order.footColorName + '</td>' +
                             '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
                             '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';
