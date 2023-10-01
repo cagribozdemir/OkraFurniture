@@ -28,6 +28,13 @@ namespace WebApi.Controllers
             return View(result);
         }
 
+        [HttpGet("Proformas/GetAllByProcess/{process}")]
+        public IActionResult GetAllByProcess(int process)
+        {
+            var result = _proformaService.GetAllByProcess(process);
+            return View(result);
+        }
+
         [HttpGet]
         public IActionResult AddProforma()
         {

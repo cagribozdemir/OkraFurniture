@@ -22,11 +22,10 @@ namespace Business.Concrete
         IFabricService _fabricService;
         IProformaService _proformaService;
         ICategoryService _categoryService;
-        IProductionService _productionService;
 
         public OrderManager(IOrderDal orderDal, IProductService productService, IProductColorService productColorService, 
             IFootColorService footColorService, IFabricService fabricService, IFootService footService, IProformaService proformaService,
-            ICategoryService categoryService, IProductionService productionService)
+            ICategoryService categoryService)
         {
             _orderDal = orderDal;
             _productService = productService;
@@ -36,7 +35,6 @@ namespace Business.Concrete
             _footService = footService;
             _proformaService = proformaService;
             _categoryService = categoryService;
-            _productionService = productionService;
         }
 
         public IResult Add(CreateOrderDto createOrderDto)
@@ -78,7 +76,7 @@ namespace Business.Concrete
             decimal newTotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             order.Piece = order.Amount * _productService.GetById(order.ProductId).Piece;
             order.TotalPrice = newTotalPrice;
-            order.ProductionId = 1;
+            order.OrderProcess = 1;
 
             proformaTotalPrice += newTotalPrice;
             _proformaService.UpdateTotalPrice(order.ProformaId, proformaTotalPrice);
@@ -145,7 +143,9 @@ namespace Business.Concrete
                 FabricId = dto.FabricId,
                 FootId = dto.FootId,
                 FootColorId = dto.FootColorId,
-                ProductionId = 1
+                Production = 1,
+                WeldProcess = 1,
+                OrderProcess = 1
             };
         }
 
@@ -163,11 +163,12 @@ namespace Business.Concrete
                 resultOrderDto.ProductCode = _productService.GetById(order.ProductId).Code;
                 resultOrderDto.ProductName = _productService.GetById(order.ProductId).Name;
                 resultOrderDto.ProductColorName = _productColorService.GetById(order.ProductColorId).Name;
-                resultOrderDto.ProductionName = _productionService.GetById(order.ProductionId).Name;
                 resultOrderDto.Piece = order.Piece;
                 resultOrderDto.Discount = order.Discount;
                 resultOrderDto.Price = order.Price;
                 resultOrderDto.TotalPrice = order.TotalPrice;
+
+                #region Fabric, Footcolor, Foot
                 if (categoryName == "Masa")
                 {
                     resultOrderDto.FabricName = "---";
@@ -186,6 +187,112 @@ namespace Business.Concrete
                     resultOrderDto.FootColorName = _footColorService.GetById(order.FootColorId).Name;
                     resultOrderDto.FootName = _footService.GetById(order.FootId).Name;
                 }
+                #endregion
+
+                #region Process
+                if (categoryName == "Masa")
+                {
+                    if (order.WeldProcess == 1)
+                    {
+                        if (order.Production == 1)
+                        {
+                            resultOrderDto.ProductionName = "Kaynakhane ve CNC Aşamasında";
+                        }
+                        else
+                        {
+                            resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
+                        }
+                    }
+                    else
+                    {
+                        if (order.Production == 1)
+                        {
+                            resultOrderDto.ProductionName = "CNC Aşamasında";
+                        }
+                        else if (order.Production == 2)
+                        {
+                            resultOrderDto.ProductionName = "Boyahane Aşamasında";
+                        }
+                        else if (order.Production == 3)
+                        {
+                            resultOrderDto.ProductionName = "Mobilyahane Aşamasında";
+                        }
+                        else
+                        {
+                            resultOrderDto.ProductionName = "Sipariş Hazır";
+                        }
+                    }
+                }
+                else if (categoryName == "Sandalye")
+                {
+                    if (_productService.GetById(order.ProductId).Kaputhane == true)
+                    {
+                        if (order.WeldProcess == 1)
+                        {
+                            if (order.Production == 1)
+                            {
+                                resultOrderDto.ProductionName = "Kaynakhane ve Kaputhane Aşamasında";
+                            }
+                            else if (order.Production == 2)
+                            {
+                                resultOrderDto.ProductionName = "Kaynakhane ve Terzihane Aşamasında";
+                            }
+                            else
+                            {
+                                resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
+                            }
+                        }
+                        else
+                        {
+                            if (order.Production == 1)
+                            {
+                                resultOrderDto.ProductionName = "Kaputhane Aşamasında";
+                            }
+                            else if (order.Production == 2)
+                            {
+                                resultOrderDto.ProductionName = "Terzihane Aşamasında";
+                            }
+                            else if ((order.Production == 3))
+                            {
+                                resultOrderDto.ProductionName = "Döşemehane Aşamasında";
+                            }
+                            else
+                            {
+                                resultOrderDto.ProductionName = "Sipariş Hazır";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (order.WeldProcess == 1)
+                        {
+                            if (order.Production == 1)
+                            {
+                                resultOrderDto.ProductionName = "Kaynakhane ve Terzihane Aşamasında";
+                            }
+                            else
+                            {
+                                resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
+                            }
+                        }
+                        else
+                        {
+                            if (order.Production == 1)
+                            {
+                                resultOrderDto.ProductionName = "Terzihane Aşamasında";
+                            }
+                            else
+                            {
+                                resultOrderDto.ProductionName = "Döşemehane Aşamasında";
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    resultOrderDto.ProductionName = "-----";
+                }
+                #endregion
 
                 resultOrderDto.Description = order.Description;
                 resultOrderDto.CompanyName = _proformaService.GetById(order.ProformaId).CompanyName;

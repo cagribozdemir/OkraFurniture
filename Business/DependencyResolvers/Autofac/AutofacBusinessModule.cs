@@ -37,20 +37,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<FabricManager>().As<IFabricService>().SingleInstance();
             builder.RegisterType<EfFabricDal>().As<IFabricDal>().SingleInstance();
 
-            builder.RegisterType<FabricColorManager>().As<IFabricColorService>().SingleInstance();
-            builder.RegisterType<EfFabricColorDal>().As<IFabricColorDal>().SingleInstance();
-
-            builder.RegisterType<TableColorManager>().As<ITableColorService>().SingleInstance();
-            builder.RegisterType<EfTableColorDal>().As<ITableColorDal>().SingleInstance();
-
             builder.RegisterType<OrderManager>().As<IOrderService>().SingleInstance();
             builder.RegisterType<EfOrderDal>().As<IOrderDal>();
 
             builder.RegisterType<ProformaManager>().As<IProformaService>().SingleInstance();
             builder.RegisterType<EfProformaDal>().As<IProformaDal>();
-
-            builder.RegisterType<ProductionManager>().As<IProductionService>().SingleInstance();
-            builder.RegisterType<EfProductionDal>().As<IProductionDal>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

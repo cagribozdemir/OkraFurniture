@@ -2,7 +2,6 @@
 using Entity.Concrete;
 using Entity.DTOs.Category;
 using Entity.DTOs.Fabric;
-using Entity.DTOs.FabricColor;
 using Entity.DTOs.Foot;
 using Entity.DTOs.FootColor;
 using Entity.DTOs.Order;
@@ -44,10 +43,6 @@ namespace Business.Mappers.AutoMapper
             CreateMap<Fabric, ResultFabricDto>().ReverseMap();
             CreateMap<Fabric, CreateFabricDto>().ReverseMap();
             CreateMap<Fabric, UpdateFabricDto>().ReverseMap();
-
-            CreateMap<FabricColor, ResultFabricColorDto>().ReverseMap();
-            CreateMap<FabricColor, CreateFabricColorDto>().ReverseMap();
-            CreateMap<FabricColor, UpdateFabricColorDto>().ReverseMap();
 
             CreateMap<Order, ResultOrderDto>().ReverseMap();
             CreateMap<Order, CreateOrderDto>().ReverseMap();

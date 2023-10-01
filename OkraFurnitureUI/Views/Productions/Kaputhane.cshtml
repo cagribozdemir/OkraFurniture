@@ -42,7 +42,6 @@
                                     <th>Renk</th>
                                     <th>Metre</th>
                                     <th>Firma</th>
-                                    <th>Güncelle</th>
                                     <th>Tamamlandı</th>
                                 </tr>
                             </thead>
@@ -57,7 +56,6 @@
                                     <th>Renk</th>
                                     <th>Metre</th>
                                     <th>Firma</th>
-                                    <th>Güncelle</th>
                                     <th>Tamamlandı</th>
                                 </tr>
                             </tfoot>
@@ -100,8 +98,7 @@
                             '<td>' + order.productColorName + '</td>' +
                             '<td>' + 25 + '</td>' + //buranın hesabını sor ve işle
                             '<td>' + order.companyName + '</td>' +
-                            '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
-                            '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
+                            '<td><a href="/Orders/UpdateProcess/' + order.id + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';
                         tbody.append(row);
                     });

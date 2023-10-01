@@ -3,6 +3,7 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
+using Entity.DTOs.Order;
 using Entity.DTOs.Proforma;
 using System;
 using System.Collections.Generic;
@@ -48,24 +49,12 @@ namespace Business.Concrete
 
         public List<ResultProformaDto> GetAll()
         {
-            List<Proforma> proformas = _proformaDal.GetAll();
-            List<ResultProformaDto> resultProformaDtos = new List<ResultProformaDto>();
-            foreach (var proforma in proformas)
-            {
-                ResultProformaDto resultProformaDto = new ResultProformaDto();
-                resultProformaDto.Id = proforma.Id;
-                resultProformaDto.ReceiptNo = proforma.ReceiptNo;
-                resultProformaDto.CompanyName = proforma.CompanyName;
-                resultProformaDto.Address = proforma.Address;
-                resultProformaDto.Date = proforma.Date;
-                resultProformaDto.TotalPrice = proforma.TotalPrice;
-                resultProformaDto.Payment = proforma.Payment;
-                resultProformaDto.Balance = proforma.Balance;
-                resultProformaDto.Description = proforma.Description;
+            return MapProformaToResultDto(_proformaDal.GetAll());
+        }
 
-                resultProformaDtos.Add(resultProformaDto);
-            }
-            return resultProformaDtos;
+        public List<ResultProformaDto> GetAllByProcess(int process)
+        {
+            return MapProformaToResultDto(_proformaDal.GetAll(p => p.Process == process));
         }
 
         public Proforma GetById(int id)
@@ -92,6 +81,40 @@ namespace Business.Concrete
             var proforma = _proformaDal.Get(p => p.Id == id);
             proforma.TotalPrice += totalPrice;
             _proformaDal.Update(proforma);
+        }
+
+        private List<ResultProformaDto> MapProformaToResultDto(List<Proforma> proformas)
+        {
+            List<ResultProformaDto> resultProformaDtos = new List<ResultProformaDto>();
+            foreach (var proforma in proformas)
+            {
+                ResultProformaDto resultProformaDto = new ResultProformaDto();
+                resultProformaDto.Id = proforma.Id;
+                resultProformaDto.ReceiptNo = proforma.ReceiptNo;
+                resultProformaDto.CompanyName = proforma.CompanyName;
+                resultProformaDto.Address = proforma.Address;
+                resultProformaDto.Date = proforma.Date;
+                resultProformaDto.TotalPrice = proforma.TotalPrice;
+                resultProformaDto.Payment = proforma.Payment;
+                resultProformaDto.Balance = proforma.Balance;
+                resultProformaDto.Description = proforma.Description;
+
+                if (proforma.Process == 1)
+                {
+                    resultProformaDto.Process = "İşleme Alındı";
+                }
+                else if (proforma.Process == 2)
+                {
+                    resultProformaDto.Process = "Kısmı İşlemde";
+                }
+                else
+                {
+                    resultProformaDto.Process = "Tamamlandı";
+                }
+
+                resultProformaDtos.Add(resultProformaDto);
+            }
+            return resultProformaDtos;
         }
     }
 }

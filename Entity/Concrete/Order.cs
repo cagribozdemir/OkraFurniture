@@ -37,8 +37,10 @@ namespace Entity.Concrete
         public Proforma Proforma { get; set; }
         public int ProformaId { get; set; }
 
-        public Production Production { get; set; }
-        public int ProductionId { get; set; }
+        public int Production { get; set; }
+        public int WeldProcess { get; set; }
+
+        public int OrderProcess { get; set; }
 
         public bool Status { get; set; }
 

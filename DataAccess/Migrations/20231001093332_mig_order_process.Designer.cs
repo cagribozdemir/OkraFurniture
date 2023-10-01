@@ -4,6 +4,7 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20231001093332_mig_order_process")]
+    partial class mig_order_process
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,6 +70,30 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Fabrics");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.FabricColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FabricColors");
                 });
 
             modelBuilder.Entity("Entity.Concrete.Foot", b =>
@@ -162,7 +188,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Production")
+                    b.Property<int>("ProductionId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProformaId")
@@ -173,9 +199,6 @@ namespace DataAccess.Migrations
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("WeldProcess")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -190,6 +213,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("ProductColorId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductionId");
 
                     b.HasIndex("ProformaId");
 
@@ -256,6 +281,26 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductColors");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Production", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Productions");
                 });
 
             modelBuilder.Entity("Entity.Concrete.Proforma", b =>
@@ -333,6 +378,30 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Entity.Concrete.TableColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TableColors");
                 });
 
             modelBuilder.Entity("Entity.Concrete.User", b =>
@@ -548,6 +617,12 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entity.Concrete.Production", "Production")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Entity.Concrete.Proforma", "Proforma")
                         .WithMany("Orders")
                         .HasForeignKey("ProformaId")
@@ -563,6 +638,8 @@ namespace DataAccess.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductColor");
+
+                    b.Navigation("Production");
 
                     b.Navigation("Proforma");
                 });
@@ -657,6 +734,11 @@ namespace DataAccess.Migrations
                 });
 
             modelBuilder.Entity("Entity.Concrete.ProductColor", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Production", b =>
                 {
                     b.Navigation("Orders");
                 });
