@@ -40,8 +40,6 @@ namespace Entity.Concrete
         public int Production { get; set; }
         public int WeldProcess { get; set; }
 
-        public int OrderProcess { get; set; }
-
         public bool Status { get; set; }
 
     }

@@ -25,5 +25,6 @@ namespace Entity.DTOs.Order
         public string? Description { get; set; }
         public string ProductionName { get; set; }
         public string CompanyName { get; set; }
+        public int Process { get; set; }
     }
 }

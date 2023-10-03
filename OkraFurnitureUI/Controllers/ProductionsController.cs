@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Entity.Concrete;
+using Entity.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OkraFurnitureUI.Controllers
@@ -17,7 +19,7 @@ namespace OkraFurnitureUI.Controllers
         {
             return View();
         }
-
+        #region Get Methods
         [HttpGet("Productions/Kaynakhane")]
         public IActionResult Kaynakhane()
         {
@@ -59,5 +61,14 @@ namespace OkraFurnitureUI.Controllers
         {
             return View();
         }
+        #endregion
+
+        [HttpGet("Productions/UpdateProcess/{id}/{production}/{process}")]
+        public IActionResult UpdateProcess(int id, string production, int process)
+        {
+            _orderService.UpdateProcess(id, process);
+            return RedirectToAction(production, "Productions");
+        }
+
     }
 }

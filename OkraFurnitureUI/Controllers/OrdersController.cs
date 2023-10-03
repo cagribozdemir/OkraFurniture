@@ -48,18 +48,18 @@ namespace WebApi.Controllers
             return View(result);
         }
 
-        [HttpGet("Orders/GetByFootId/{footId}")]
-        public IActionResult GetByFootId(int footId)
+        [HttpGet("Orders/GetProductionsByFootId/{footId}")]
+        public IActionResult GetProductionsByFootId(int footId)
         {
-            var result = _orderService.GetByFootId(footId);
+            var result = _orderService.GetProductionsByFootId(footId);
 
             return Json(result);
         }
 
-        [HttpGet("Orders/GetByProductId/{productId}")]
-        public IActionResult GetByProductId(int productId)
+        [HttpGet("Orders/GetProductionsByProductId/{productId}/{production}")]
+        public IActionResult GetProductionsByProductId(int productId, int production)
         {
-            var result = _orderService.GetByProductId(productId);
+            var result = _orderService.GetProductionsByProductId(productId, production);
 
             return Json(result);
         }

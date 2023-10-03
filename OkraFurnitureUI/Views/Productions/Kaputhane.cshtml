@@ -85,7 +85,7 @@
                 e.preventDefault();
 
                 var productId = $(this).attr('data-productId');
-                $.getJSON(`/Orders/GetByProductId/${productId}`, function (data) {
+                $.getJSON(`/Orders/GetProductionsByProductId/${productId}/1`, function (data) {
                     var tbody = $("#dataByProduct");
                     tbody.empty();
 
@@ -98,7 +98,7 @@
                             '<td>' + order.productColorName + '</td>' +
                             '<td>' + 25 + '</td>' + //buranın hesabını sor ve işle
                             '<td>' + order.companyName + '</td>' +
-                            '<td><a href="/Orders/UpdateProcess/' + order.id + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
+                            '<td><a href="/Productions/UpdateProcess/' + order.id + '/Kaputhane/2' + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';
                         tbody.append(row);
                     });

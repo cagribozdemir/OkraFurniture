@@ -6,6 +6,7 @@ using Entity.Concrete;
 using Entity.DTOs.Order;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,7 +77,6 @@ namespace Business.Concrete
             decimal newTotalPrice = order.Price * order.Amount * (100 - order.Discount) / 100;
             order.Piece = order.Amount * _productService.GetById(order.ProductId).Piece;
             order.TotalPrice = newTotalPrice;
-            order.OrderProcess = 1;
 
             proformaTotalPrice += newTotalPrice;
             _proformaService.UpdateTotalPrice(order.ProformaId, proformaTotalPrice);
@@ -85,9 +85,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.OrderUpdated);
         }
 
-        public List<ResultOrderDto> GetByFootId(int footId)
+        public List<ResultOrderDto> GetProductionsByFootId(int footId)
         {
-            var orders = _orderDal.GetAll(o => o.FootId == footId);
+            var orders = _orderDal.GetAll(o => o.FootId == footId && o.WeldProcess == 1);
 
             Dictionary<int?, int> totalAmounts = new Dictionary<int?, int>();
 
@@ -116,9 +116,30 @@ namespace Business.Concrete
             return resultDto;
         }
 
-        public List<ResultOrderDto> GetByProductId(int productId)
+        public List<ResultOrderDto> GetProductionsByProductId(int productId, int production)
         {
-            return MapOrderToResultDto(_orderDal.GetAll(o => o.ProductId == productId));
+            return MapOrderToResultDto(_orderDal.GetAll(o => o.ProductId == productId && o.Production == production));
+        }
+
+        public void UpdateProcess(int id, int process)
+        {
+            Order order = _orderDal.Get(o => o.Id == id);
+            order.Production = process;
+            _orderDal.Update(order);
+            
+            if (process == 4)
+            {
+                _proformaService.UpdateProcess(order.ProformaId, 2);
+
+                var orders = GetByProformaId(order.ProformaId);
+                foreach (var result in orders)
+                {
+                    if (orders.All(o => o.Process == 4))
+                    {
+                        _proformaService.UpdateProcess(order.ProformaId, 3);
+                    }
+                }
+            }
         }
 
         private decimal CalculateTotalPrice(CreateOrderDto createOrderDto)
@@ -128,6 +149,7 @@ namespace Business.Concrete
 
         private Order MapCreateDtoToOrder(CreateOrderDto dto, decimal totalPrice)
         {
+            int production = ProductionCalculater(dto.ProductId);
             return new Order
             {
                 ProformaId = dto.ProformaId,
@@ -143,9 +165,8 @@ namespace Business.Concrete
                 FabricId = dto.FabricId,
                 FootId = dto.FootId,
                 FootColorId = dto.FootColorId,
-                Production = 1,
-                WeldProcess = 1,
-                OrderProcess = 1
+                Production = production,
+                WeldProcess = 1
             };
         }
 
@@ -192,100 +213,43 @@ namespace Business.Concrete
                 #region Process
                 if (categoryName == "Masa")
                 {
-                    if (order.WeldProcess == 1)
+                    switch (order.Production)
                     {
-                        if (order.Production == 1)
-                        {
-                            resultOrderDto.ProductionName = "Kaynakhane ve CNC Aşamasında";
-                        }
-                        else
-                        {
-                            resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
-                        }
-                    }
-                    else
-                    {
-                        if (order.Production == 1)
-                        {
+                        case 1:
                             resultOrderDto.ProductionName = "CNC Aşamasında";
-                        }
-                        else if (order.Production == 2)
-                        {
+                            break;
+                        case 2:
                             resultOrderDto.ProductionName = "Boyahane Aşamasında";
-                        }
-                        else if (order.Production == 3)
-                        {
+                            break;
+                        case 3:
                             resultOrderDto.ProductionName = "Mobilyahane Aşamasında";
-                        }
-                        else
-                        {
-                            resultOrderDto.ProductionName = "Sipariş Hazır";
-                        }
+                            break;
+                        case 4:
+                            resultOrderDto.ProductionName = "Üretim Tamamlandı";
+                            break;
+                        default:
+                            break;
                     }
+
                 }
                 else if (categoryName == "Sandalye")
                 {
-                    if (_productService.GetById(order.ProductId).Kaputhane == true)
+                    switch (order.Production)
                     {
-                        if (order.WeldProcess == 1)
-                        {
-                            if (order.Production == 1)
-                            {
-                                resultOrderDto.ProductionName = "Kaynakhane ve Kaputhane Aşamasında";
-                            }
-                            else if (order.Production == 2)
-                            {
-                                resultOrderDto.ProductionName = "Kaynakhane ve Terzihane Aşamasında";
-                            }
-                            else
-                            {
-                                resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
-                            }
-                        }
-                        else
-                        {
-                            if (order.Production == 1)
-                            {
-                                resultOrderDto.ProductionName = "Kaputhane Aşamasında";
-                            }
-                            else if (order.Production == 2)
-                            {
-                                resultOrderDto.ProductionName = "Terzihane Aşamasında";
-                            }
-                            else if ((order.Production == 3))
-                            {
-                                resultOrderDto.ProductionName = "Döşemehane Aşamasında";
-                            }
-                            else
-                            {
-                                resultOrderDto.ProductionName = "Sipariş Hazır";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (order.WeldProcess == 1)
-                        {
-                            if (order.Production == 1)
-                            {
-                                resultOrderDto.ProductionName = "Kaynakhane ve Terzihane Aşamasında";
-                            }
-                            else
-                            {
-                                resultOrderDto.ProductionName = "Kaynakhane Aşamasında";
-                            }
-                        }
-                        else
-                        {
-                            if (order.Production == 1)
-                            {
-                                resultOrderDto.ProductionName = "Terzihane Aşamasında";
-                            }
-                            else
-                            {
-                                resultOrderDto.ProductionName = "Döşemehane Aşamasında";
-                            }
-                        }
+                        case 1:
+                            resultOrderDto.ProductionName = "Kaputhane Aşamasında";
+                            break;
+                        case 2:
+                            resultOrderDto.ProductionName = "Terzihane Aşamasında";
+                            break;
+                        case 3:
+                            resultOrderDto.ProductionName = "Döşemehane Aşamasında";
+                            break;
+                        case 4:
+                            resultOrderDto.ProductionName = "Üretim Tamamlandı";
+                            break;
+                        default:
+                            break;
                     }
                 }
                 else
@@ -294,11 +258,26 @@ namespace Business.Concrete
                 }
                 #endregion
 
+                resultOrderDto.Process = order.Production;
                 resultOrderDto.Description = order.Description;
                 resultOrderDto.CompanyName = _proformaService.GetById(order.ProformaId).CompanyName;
                 resultOrderDtos.Add(resultOrderDto);
             }
             return resultOrderDtos;
+        }
+
+        private int ProductionCalculater(int productId)
+        {
+            var product = _productService.GetById(productId);
+            var category = _categoryService.GetById(product.CategoryId);
+            if (category.Name == "Sandalye" && product.IsKaputhane == false)
+            {
+                return 2;
+            }
+            else
+            {
+                return 1;
+            }
         }
     }
 }

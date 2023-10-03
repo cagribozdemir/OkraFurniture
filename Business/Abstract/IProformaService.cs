@@ -18,5 +18,6 @@ namespace Business.Abstract
         void Delete(int id);
         IResult Update(Proforma proforma);
         void UpdateTotalPrice(int id, decimal totalPrice);
+        void UpdateProcess(int id, int process);
     }
 }

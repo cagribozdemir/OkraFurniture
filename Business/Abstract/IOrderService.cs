@@ -13,11 +13,12 @@ namespace Business.Abstract
     {
         List<ResultOrderDto> GetAll();
         List<ResultOrderDto> GetByProformaId(int proformaId);
-        List<ResultOrderDto> GetByFootId(int footId);
-        List<ResultOrderDto> GetByProductId(int productId);
+        List<ResultOrderDto> GetProductionsByFootId(int footId);
+        List<ResultOrderDto> GetProductionsByProductId(int productId, int production);
         Order GetById(int id);
         IResult Add(CreateOrderDto createOrderDto);
         IResult Update(Order order);
         void Delete(int id);
+        void UpdateProcess(int id, int process);
     }
 }

@@ -49,7 +49,8 @@ namespace Business.Concrete
 
         public List<ResultProformaDto> GetAll()
         {
-            return MapProformaToResultDto(_proformaDal.GetAll());
+            var proformas = _proformaDal.GetAll(); 
+            return MapProformaToResultDto(proformas);
         }
 
         public List<ResultProformaDto> GetAllByProcess(int process)
@@ -74,6 +75,13 @@ namespace Business.Concrete
             _proformaDal.Update(proforma);
 
             return new SuccessResult(Messages.ProformaUpdated);
+        }
+
+        public void UpdateProcess(int id, int process)
+        {
+            var proforma = _proformaDal.Get(p => p.Id == id);
+            proforma.Process = process;
+            _proformaDal.Update(proforma);
         }
 
         public void UpdateTotalPrice(int id, decimal totalPrice)

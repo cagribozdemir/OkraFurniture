@@ -17,7 +17,7 @@ namespace Entity.DTOs.Proforma
         public decimal TotalPrice { get; set; }
         public decimal Payment { get; set; }
         public decimal Balance { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string Process { get; set; }
     }
 }

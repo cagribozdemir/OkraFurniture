@@ -35,7 +35,7 @@ namespace Business.Concrete
             product.Code = createProductDto.Code;
             product.Price = createProductDto.Price;
             product.Piece = createProductDto.Piece;
-            product.Kaputhane = createProductDto.Kaputhane;
+            product.IsKaputhane = createProductDto.IsKaputhane;
             product.Category = category;
             product.Status = true;
 
@@ -68,7 +68,7 @@ namespace Business.Concrete
 
         public List<ResultProductDto> GetAllByKaputhane(bool isKaputhane)
         {
-            return MapProductToResultDtos(_productDal.GetAll(p => p.Kaputhane == isKaputhane));
+            return MapProductToResultDtos(_productDal.GetAll(p => p.IsKaputhane == isKaputhane));
         }
 
         public Product GetByCode(string code)
@@ -100,7 +100,7 @@ namespace Business.Concrete
                 resultProductDto.Code = product.Code;
                 resultProductDto.Price = product.Price;
                 resultProductDto.Piece = product.Piece;
-                resultProductDto.Kaputhane = product.Kaputhane;
+                resultProductDto.Kaputhane = product.IsKaputhane;
                 resultProductDto.CategoryName = _categoryService.GetById(product.CategoryId).Name;
 
                 resultProductDtos.Add(resultProductDto);

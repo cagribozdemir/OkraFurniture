@@ -44,7 +44,6 @@
                                         <th>Adet</th>
                                         <th>Fitil</th>
                                         <th>Ayak Tipi ve Rengi</th>
-                                        <th>Güncelle</th>
                                         <th>Tamamlandı</th>
                                     </tr>
                                 </thead>
@@ -60,7 +59,6 @@
                                         <th>Adet</th>
                                         <th>Fitil</th>
                                         <th>Ayak Tipi ve Rengi</th>
-                                        <th>Güncelle</th>
                                         <th>Tamamlandı</th>
                                     </tr>
                                 </tfoot>
@@ -77,7 +75,7 @@
     {
     <script type="text/javascript">
         $(document).ready(function () {
-            $.getJSON(`/Products/GetProductsByCategoryName/Sandalye`, function (data) {
+            $.getJSON(`/Products/GetProductsByCategoryName/Masa`, function (data) {
                 var productTypes = $("#productTypes");
 
                 $.each(data, function (index, product) {
@@ -90,7 +88,7 @@
                 e.preventDefault();
 
                 var productId = $(this).attr('data-productId');
-                $.getJSON(`/Orders/GetByProductId/${productId}`, function (data) {
+                $.getJSON(`/Orders/GetProductionsByProductId/${productId}/1`, function (data) {
                     var tbody = $("#dataByProduct");
                     tbody.empty();
 
@@ -104,8 +102,7 @@
                             '<td>' + order.amount + '</td>' +
                             '<td>' + 25 + '</td>' + //burayı sor ve işle
                             '<td>' + order.footName + ' / ' + order.footColorName + '</td>' +
-                            '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
-                            '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
+                            '<td><a href="/Productions/UpdateProcess/' + order.id + '/Cnc/2' + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';
                         tbody.append(row);
                     });

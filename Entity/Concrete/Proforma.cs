@@ -19,7 +19,7 @@ namespace Entity.Concrete
         public decimal TotalPrice { get; set; }
         public decimal Payment { get; set; }
         public decimal Balance { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public int Process { get; set; }
         public bool Status { get; set; }
         public List<Order> Orders { get; set; }

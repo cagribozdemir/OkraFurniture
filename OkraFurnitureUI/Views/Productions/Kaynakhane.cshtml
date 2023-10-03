@@ -79,7 +79,7 @@
                 e.preventDefault();
 
                 var footId = $(this).attr('data-footId');
-                $.getJSON(`/Orders/GetByFootId/${footId}`, function (data) {
+                $.getJSON(`/Orders/GetProductionsByFootId/${footId}`, function (data) {
                     var tbody = $("#dataByFoot");
                     tbody.empty();
 
@@ -89,7 +89,7 @@
                             '<td>' + order.footColorName + '</td>' +
                             '<td>' + order.amount + '</td>' +
                             '<td><a href="/Orders/UpdateOrder/' + 1 + '" class="btn btn-outline-success">Güncelle</a></td>' +
-                            '<td><a href="/Orders/DeleteOrder?id=' + 1 + '&&proformaId=' + 1 + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
+                            '<td><a href="/Productions/UpdateProcess/' + order.id + '/Kaynakhane/2' + '" class="btn btn-outline-danger">Tamamlandı</a></td>' +
                             '</tr>';
                         tbody.append(row);
                     });
